@@ -10,7 +10,7 @@ public class Mat {
 		str = JOptionPane.showInputDialog("Expoente: ");
 		
 		int exp = Integer.parseInt(str);
-		System.out.println(base + "^" );
+		System.out.println(base +  " ^ "  + exp +  " = "  + pow (base, exp));
 	}
 
 	
