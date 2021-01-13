@@ -32,7 +32,7 @@ public class Repeticao {
 	public static void calculadoraFor () {
 		String  str = JOptionPane.showInputDialog("Imprimi a tabuada do numero: ");
 		int num = Integer.parseInt(str);
-		for (int cont = 0 ; 10 >= cont ; cont++) {
+		for (int cont = 0 ; 10 >= cont ; cont++) { 
 			System.out.println(num + " x " + cont + " = " + num*cont);
 			
 		}
@@ -43,7 +43,7 @@ public class Repeticao {
 		String  str = JOptionPane.showInputDialog("Imprimi a tabuada do numero: ");
 		int num = Integer.parseInt(str);
 		int cont = 0 ; 
-		while (10 >= cont) {
+		while (10 >= cont) { 
 			System.out.println(num + " x " + cont + " = " + num*cont);
 			 cont++;
 		}

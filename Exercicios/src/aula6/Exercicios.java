@@ -7,9 +7,9 @@ public class Exercicios {
 	public static void main(String[] args) {
 		//repeteNome();
 		//calculadora();
-		//somaAteNumero();
+		somaAteNumero();
 		//somaAteNumeroComBreak();
-		somaAteNumeroWhile();
+		//somaAteNumeroWhile();
 		
 	}
 
@@ -30,7 +30,7 @@ public class Exercicios {
 	public static void calculadora () {
 		String  str = JOptionPane.showInputDialog("Imprimi a tabuada do numero: ");
 		int num = Integer.parseInt(str);
-		for (int cont = 0 ; 10 >= cont ; cont++) {
+		for (int cont = 0 ;  10 >= cont ; cont++) {
 			System.out.println(num + " x " + cont + " = " + num*cont);
 			
 		}
@@ -59,15 +59,18 @@ public class Exercicios {
 	public static void somaAteNumeroWhile() {
 		String  str = JOptionPane.showInputDialog("Produto até");
 		int num = Integer.parseInt(str);
-		int total = 1;
+		int total = 1; 
 		int cont = 1 ; 
 		while (num >= cont) {
 			total = total * cont;
 			System.out.print(cont);
 			if (cont<num) System.out.print(" * ");
 			cont++;
+			
 		}
-			System.out.println(" = " + total);
+		
+		System.out.println(" = " + total);
+			
 			 
 		
 		
