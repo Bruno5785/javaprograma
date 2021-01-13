@@ -9,8 +9,8 @@ public class Exercicios {
 
 	public static void main(String[] args) {
 		//converter();
-		//calculaSalarioBruto();
-		calculaSalarioLiquido();
+		calculaSalarioBruto();
+		//calculaSalarioLiquido();
 		
 	}
 	
@@ -63,7 +63,7 @@ public class Exercicios {
 		celsius = sc.nextDouble();
 		fahrenheit = celsius * 9/5 + 32;
 		kelvin = celsius + 273.15;
-		System.out.println("Temperatura em fahrenheit = " + fahrenheit + "f\n "Temperatura em kelvin = " + kelvin + " k");
+		System.out.println("Temperatura em fahrenheit = " + fahrenheit + "f\n " + "Temperatura em kelvin =" +  " kelvin = "  + "k");
 		sc.close();
 	}
 }
