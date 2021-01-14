@@ -17,11 +17,32 @@ public class Mat {
 		
 	}
 
+	public static double maior (double v[]) {
+		return 1;
+	}
 	
+	public static double menor (double v[]) {
+		return 1;
+	}
 	
+	public static double soma(double v[]) {
+		double soma = 0;
+		for (double n: v) {
+		soma += n;	
+		}
+		return soma;
+	}
 	
 
+	
+	public static double media(double v[]) {
+		double soma = soma(v);
+		return(soma/v.length);
+		
+	}
 
+	
+	
 	public static double fat (int num) {
 		double total = 1;
 		int cont = 1;
