@@ -64,15 +64,6 @@ public class Arrays {
 		double [] nums =  new  double [tamanho]; // cria um array de 40 doubles
 		int preenchido [] = { 2 , 3 , 5 , 3 , 7 , 90 , 45 };  // cria array de int preenchido
 	}
-	public static void variosArrays() {
-		int inteiros [] = new int[10];
-		long [] longs = new long[20];
-		double[] decimais = new double [132];
-		String nomes [] = new String[20];
-		float flutuantes[];
-		int tamanho = 40;
-		double[] nums = new double [tamanho];
-	}
 	
 	
 }

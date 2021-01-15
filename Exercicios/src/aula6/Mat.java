@@ -2,8 +2,6 @@ package aula6;
 
 import java.util.Scanner;
 
-import javax.swing.JOptionPane;
-
 public class Mat {
 
 	public static void main(String[] args) {
@@ -18,11 +16,23 @@ public class Mat {
 	}
 
 	public static double maior (double v[]) {
-		return 1;
+		double maior = v[0];
+		for (int i=1 ; i<v.length ; i++) {
+			if (v[i] > maior ) maior = v[i];
+		}
+		return maior;
+		
 	}
 	
-	public static double menor (double v[]) {
-		return 1;
+	
+	public static double menor(double v[]) {
+		double menor = v[0];
+		for (int i=1 ; i<v.length ; i++) {
+			if (v[i] > menor ) menor = v[i];
+		
+		
+		}
+		return menor;
 	}
 	
 	public static double soma(double v[]) {
