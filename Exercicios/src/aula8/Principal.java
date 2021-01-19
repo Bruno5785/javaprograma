@@ -16,7 +16,15 @@ public class Principal {
 		t2.c =15;
 		System.out.println("Perimetro do t2 = " + t2.getPerimetro());
 		
-
+		Quadrado q1 = new Quadrado(5);
+		System.out.println("Perimetro do q1 = " + q1.getPerimetro());
+		System.out.println("Area do q1 =" + q1.getArea());
+		
+		
+		Retangulo r1 = new Retangulo (3,4);
+		System.out.println("Perimetro do r1 = " + r1.getPerimetro());
+		System.out.println("Area do r1 = " + r1.getArea());
+		
 	}
 
 }
