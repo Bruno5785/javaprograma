@@ -16,7 +16,9 @@
 - qtdeMaxima: int
 - qtdeMinima: int
 - qtdeEstoque: int
---</panel_attributes>
+-
++ entrada(Entrada: Entrada)
++ saida(saida: Saida)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
