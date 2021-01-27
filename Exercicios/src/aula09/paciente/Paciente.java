@@ -1,4 +1,4 @@
-package aula9.paciente;
+package aula09.paciente;
 
 public class Paciente {
 

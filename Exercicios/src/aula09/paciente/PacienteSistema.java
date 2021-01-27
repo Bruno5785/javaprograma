@@ -1,4 +1,4 @@
-package aula9.paciente;
+package aula09.paciente;
 
 import java.util.ArrayList;
 import java.util.Scanner;
