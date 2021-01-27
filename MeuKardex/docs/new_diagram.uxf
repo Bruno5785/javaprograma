@@ -79,7 +79,7 @@
       <w>171</w>
       <h>180</h>
     </coordinates>
-    <panel_attributes>Kardex
+    <panel_attributes>/Kardex/
 --
 - id: int
 - data: date

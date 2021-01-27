@@ -2,7 +2,7 @@ package model;
 
 import java.util.Date;
 
-public class Kardex {
+public abstract class Kardex {
 
 	private int id;
 	private Produto produto;

@@ -6,7 +6,6 @@ import java.util.Date;
 import model.Cliente;
 import model.Entrada;
 import model.Fornecedor;
-import model.Kardex;
 import model.Produto;
 import model.Saida;
 
@@ -14,14 +13,18 @@ public class Principal {
 
 	public static void main(String[] args) {
 		ArrayList<Produto> produtos = seedProduto();
-		Produto p = produtos.get(0);
-		Kardex k = seedKardex(p);
+		Produto p = produtos.get(3);
+		
+		//Kardex k = seedKardex(p);
 		/*
 		 * alterar seedFornecedor e seedCliente 
 		 * para gerar 3 registros de cada
 		 */
-		Fornecedor f = seedFornecedor();
-		Cliente c = seedCliente();
+		ArrayList<Fornecedor> fornecedores  = seedFornecedor();
+		Fornecedor f = fornecedores.get(0);
+		
+		ArrayList<Cliente> clientes = seedCliente();
+		Cliente c = clientes.get(0);
 		
 		System.out.println(p);
 		Entrada e = seedEntrada(p,f);
@@ -53,24 +56,22 @@ public class Principal {
 	    return e;
 	}
 
-	public static Cliente seedCliente() {
-		int id = 3;
-		String cpf = "005.421.980-96";
-		String nome = "William Gates III";
-		String celular = "(11) 91111-2222";
-		String email = "bill@microsoft.com";
-		Cliente c = new Cliente(id,cpf,nome,celular,email);
-		return c;
+	public static ArrayList<Cliente> seedCliente() {
+		ArrayList<Cliente> lista = new ArrayList<>();
+		
+		lista.add (new Cliente(1,"005.421.980-96","William Gates III","(11) 91111-2222","bill@microsoft.com"));
+		lista.add (new Cliente(2,"231.669.700-37","Bruno Almeida","(11) 91911-2262","Bruno@hotmail.com"));
+		lista.add (new Cliente(3,"507.478.450-69","Enia Bernardes","(11) 91548-2667","eniabernardes@uol.com"));
+		return lista;
 	}
 	
-	public static Fornecedor seedFornecedor() {
-		int id = 2;
-		String cnpj = "46.388.927/0001-41";
-		String nome = "Microsoft Corporation";
-		String telefone = "1112345678";
-		String email = "vendas@microsoft.com";
-		Fornecedor f = new Fornecedor (id,cnpj,nome,telefone,email);
-		return f;
+	public static ArrayList<Fornecedor> seedFornecedor() {
+		ArrayList<Fornecedor> lista = new ArrayList<>();
+		
+		lista.add (new Fornecedor (1,"46.388.927/0001-41","Microsoft Corporation","1112345678","vendas@microsoft.com"));
+		lista.add (new Fornecedor (2,"50.325.743/0001-00","Sansung Coreia","1112385473","vendas@sansung.com"));
+		lista.add (new Fornecedor (3,"99.463.884/0001-88","Casas Bahia","1119954756","vendas@casasbahia.com"));
+		return lista;
 	}
 	
 	public static ArrayList<Produto> seedProduto() {
@@ -98,13 +99,13 @@ public class Principal {
 		return lista;
 	}
 	
-	public static Kardex seedKardex(Produto p) {
-		int id = 1;
-		Date data = new Date("19/01/2021");
-		String doc = "NF 1234";
-		int qtde = 10;
-		double valor = 1000;	
-		Kardex k = new Kardex(id,p,data,doc,qtde,valor);
-		return k;
-	}
+	//public static Kardex seedKardex(Produto p) {
+		//int id = 1;
+		//Date data = new Date("19/01/2021");
+		//String doc = "NF 1234";
+		//int qtde = 10;
+		//double valor = 1000;	
+		//Kardex k = new Kardex(id,p,data,doc,qtde,valor);
+		//return k;
+	//}
 }
