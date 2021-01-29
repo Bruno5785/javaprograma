@@ -8,31 +8,36 @@ import model.Entrada;
 import model.Fornecedor;
 import model.Produto;
 import model.Saida;
+import view.Tela;
 
 public class Principal {
+	
+	public static ArrayList<Produto> produtos;
+	
+	
 
 	public static void main(String[] args) {
-		ArrayList<Produto> produtos = seedProduto();
-		Produto p = produtos.get(3);
+		produtos = seedProduto();
+		//Produto p = produtos.get(3);
 		
-		//Kardex k = seedKardex(p);
-		/*
-		 * alterar seedFornecedor e seedCliente 
-		 * para gerar 3 registros de cada
-		 */
-		ArrayList<Fornecedor> fornecedores  = seedFornecedor();
-		Fornecedor f = fornecedores.get(0);
+		seedFornecedor();
+		//Fornecedor f = fornecedores.get(0);
 		
 		ArrayList<Cliente> clientes = seedCliente();
-		Cliente c = clientes.get(0);
+		//Cliente c = clientes.get(0);
 		
-		System.out.println(p);
-		Entrada e = seedEntrada(p,f);
-		System.out.println(e);
-		System.out.println(p);
-		Saida s = seedSaida(p,c);
-		System.out.println(s);
-		System.out.println(p);
+		Tela frame = new Tela();
+		frame.setVisible(true);
+		
+		
+		
+		//System.out.println(p);
+		//Entrada e = seedEntrada(p,f);
+		//System.out.println(e);
+		//System.out.println(p);
+		//Saida s = seedSaida(p,c);
+		//System.out.println(s);
+		//System.out.println(p);
 		
 	}
 	
@@ -65,13 +70,12 @@ public class Principal {
 		return lista;
 	}
 	
-	public static ArrayList<Fornecedor> seedFornecedor() {
-		ArrayList<Fornecedor> lista = new ArrayList<>();
+	public static void seedFornecedor() {
 		
-		lista.add (new Fornecedor (1,"46.388.927/0001-41","Microsoft Corporation","1112345678","vendas@microsoft.com"));
-		lista.add (new Fornecedor (2,"50.325.743/0001-00","Sansung Coreia","1112385473","vendas@sansung.com"));
-		lista.add (new Fornecedor (3,"99.463.884/0001-88","Casas Bahia","1119954756","vendas@casasbahia.com"));
-		return lista;
+		new Fornecedor (1,"46.388.927/0001-41","Microsoft Corporation","1112345678","vendas@microsoft.com");
+		new Fornecedor (2,"50.325.743/0001-00","Sansung Coreia","1112385473","vendas@sansung.com") ;
+		new Fornecedor (3,"99.463.884/0001-88","Casas Bahia","1119954756","vendas@casasbahia.com");
+		
 	}
 	
 	public static ArrayList<Produto> seedProduto() {

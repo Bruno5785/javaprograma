@@ -1,9 +1,6 @@
 package model;
 
-
-
-
-
+import java.util.ArrayList;
 
 public class Fornecedor {
 	
@@ -12,6 +9,7 @@ public class Fornecedor {
 	private String nome;
 	private String telefone;
 	private String email;
+	private static ArrayList<Fornecedor> fornecedores = new ArrayList<>();
 	
 	public Fornecedor() {
 		super();
@@ -24,6 +22,15 @@ public class Fornecedor {
 		setNome(nome);
 		setTelefone(telefone);
 		setEmail(email);
+		gravar();
+	}
+	
+	private void gravar() {
+		fornecedores.add(this);
+	}
+	
+	public static ArrayList<Fornecedor> getLista() {
+		return fornecedores;
 	}
 
 	public int getId() {
