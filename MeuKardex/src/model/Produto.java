@@ -1,5 +1,9 @@
 package model;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class Produto {
 
@@ -9,6 +13,9 @@ public class Produto {
 	private int qtdeMaxima;
 	private int qtdeMinima;
 	private int qtdeEstoque;
+	private static ArrayList<Produto> lista = new ArrayList<>();
+	public static final String ARQUIVO_PRODUTOS = "C:\\Users\\brunp\\git\\javaprograma\\MeuKardex\\db\\Produtos.csv";
+	
 	
 	public Produto() {
 		super();
@@ -24,7 +31,42 @@ public class Produto {
 		setQtdeMaxima(qtdeMaxima);
 		setQtdeMinima(qtdeMinima);
 		setQtdeEstoque(qtdeEstoque);
+		gravar();
+		
 	}
+	
+	private void gravar () {
+		lista.add(this);
+		gravaCSV();
+	}
+	
+	private void gravaCSV() {
+		try {
+		FileWriter fw = new FileWriter(ARQUIVO_PRODUTOS);
+		BufferedWriter bw = new BufferedWriter(fw);
+		bw.write("id,nome,localizacao,qtdeMaxima,qtdeMinima,qtedeEstoque\n");
+		for (Produto p: getLista()) {
+			bw.write(id);
+			bw.write(p.getId() + "," );
+			bw.write(p.getLocalizacao() + ",");
+			bw.write(p.getQtdeMaxima() + ",");
+			bw.write(p.getQtdeMinima() + ",");
+			bw.write(p.getQtdeEstoque() + "\n");
+		}
+		bw.close();
+		fw.close();
+		
+	} catch (IOException e) {
+		System.out.println(e.getMessage());
+	}
+	}
+	
+	
+	
+	public static ArrayList<Produto> getLista() {
+		return lista;
+	}
+	
 
 	public int getId() {
 		return id;

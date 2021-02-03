@@ -620,12 +620,12 @@ public class Tela extends JFrame {
 		int qtdeEstoque = Integer.parseInt(tfProdutoQtdeEstoque.getText());
 		Produto p = new Produto(id,nome,localizacao,
 								qtdeMaxima,qtdeMinima,qtdeEstoque);
-		Principal.produtos.add(p);
+		//Principal.produtos.add(p);
 		limpaTelaProduto();
 	}
 	
 	private void listaProduto() {
-		for (Produto p: Principal.produtos) {
+		for (Produto p: Produto.getLista()) {
 			System.out.println(p);
 		}
 	}

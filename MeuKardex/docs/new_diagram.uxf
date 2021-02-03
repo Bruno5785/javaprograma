@@ -4,8 +4,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>855</x>
-      <y>72</y>
+      <x>891</x>
+      <y>594</y>
       <w>171</w>
       <h>171</h>
     </coordinates>
@@ -24,8 +24,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>27</x>
-      <y>324</y>
+      <x>63</x>
+      <y>846</y>
       <w>180</w>
       <h>144</h>
     </coordinates>
@@ -42,8 +42,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>387</x>
-      <y>360</y>
+      <x>423</x>
+      <y>882</y>
       <w>171</w>
       <h>81</h>
     </coordinates>
@@ -56,8 +56,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1026</x>
-      <y>333</y>
+      <x>1062</x>
+      <y>855</y>
       <w>162</w>
       <h>144</h>
     </coordinates>
@@ -74,8 +74,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>504</x>
-      <y>72</y>
+      <x>540</x>
+      <y>594</y>
       <w>171</w>
       <h>180</h>
     </coordinates>
@@ -92,8 +92,8 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>666</x>
-      <y>360</y>
+      <x>702</x>
+      <y>882</y>
       <w>171</w>
       <h>81</h>
     </coordinates>
@@ -106,8 +106,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>459</x>
-      <y>243</y>
+      <x>495</x>
+      <y>765</y>
       <w>144</w>
       <h>135</h>
     </coordinates>
@@ -117,8 +117,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>585</x>
-      <y>243</y>
+      <x>621</x>
+      <y>765</y>
       <w>180</w>
       <h>135</h>
     </coordinates>
@@ -128,8 +128,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>666</x>
-      <y>144</y>
+      <x>702</x>
+      <y>666</y>
       <w>207</w>
       <h>45</h>
     </coordinates>
@@ -142,8 +142,8 @@ movimenta &gt;</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>198</x>
-      <y>369</y>
+      <x>234</x>
+      <y>891</y>
       <w>207</w>
       <h>45</h>
     </coordinates>
@@ -156,8 +156,8 @@ m2=0..*
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>828</x>
-      <y>369</y>
+      <x>864</x>
+      <y>891</y>
       <w>216</w>
       <h>45</h>
     </coordinates>
