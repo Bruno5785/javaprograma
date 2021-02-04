@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
+import dao.FornecedorDAO;
+
 public class Fornecedor {
 	
 	private int id;
@@ -15,6 +17,16 @@ public class Fornecedor {
 		super();
 	}
 
+	
+	public Fornecedor( String cnpj, String nome, String telefone, String email) {
+		super();
+		setId(0);
+		setCnpj(cnpj);
+		setNome(nome);
+		setTelefone(telefone);
+		setEmail(email);
+		gravar();
+	}
 	public Fornecedor(int id, String cnpj, String nome, String telefone, String email) {
 		super();
 		setId(id);
@@ -22,15 +34,16 @@ public class Fornecedor {
 		setNome(nome);
 		setTelefone(telefone);
 		setEmail(email);
-		gravar();
 	}
 	
 	private void gravar() {
-		fornecedores.add(this);
+		//fornecedores.add(this);
+		new FornecedorDAO().insert(this);
 	}
 	
 	public static ArrayList<Fornecedor> getLista() {
-		return fornecedores;
+		FornecedorDAO dao = new FornecedorDAO();
+		return dao.select();
 	}
 
 	public int getId() {

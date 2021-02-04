@@ -33,6 +33,7 @@ import controller.Principal;
 import model.Fornecedor;
 import model.Produto;
 import util.Configura;
+import util.Converte;
 
 public class Tela extends JFrame {
 
@@ -480,6 +481,7 @@ public class Tela extends JFrame {
 		lbFornecedoresNome.setFont(new Font("Calibri", Font.PLAIN, 18));
 		
 		tfFornecedorID = new JTextField();
+		tfFornecedorID.setEnabled(false);
 		tfFornecedorID.setColumns(10);
 		
 		lbFornecedoresCNPJ = new JLabel("CNPJ:");
@@ -588,7 +590,7 @@ public class Tela extends JFrame {
 		tfFornecedorNome.setText("");
 		tfFornecedorEmail.setText("");
 		tfFornecedorTelefone.setText("");
-		tfFornecedorID.requestFocus();
+		tfFornecedorCNPJ.requestFocus();
 	}
 	
 	private void limpaTelaProduto() {
@@ -602,17 +604,17 @@ public class Tela extends JFrame {
 	}
 	
 	private void gravaFornecedor() {
-		int id = Integer.parseInt(tfFornecedorID.getText());
+		int id = Converte.toInt(tfFornecedorID.getText());
 		String cnpj = tfFornecedorCNPJ.getText();
 		String nome = tfFornecedorNome.getText();
-		String telefone = tfFornecedorEmail.getText();
-		String email = tfFornecedorTelefone.getText();
-		new Fornecedor(id,cnpj,nome,telefone,email);
+		String email = tfFornecedorEmail.getText();
+		String telefone = tfFornecedorTelefone.getText();
+		new Fornecedor(cnpj,nome,telefone,email);
 		limpaTelaFornecedor();
 	}
 	
 	private void gravaProduto() {
-		int id = Integer.parseInt(tfProdutoID.getText());
+		int id = Converte.toInt(tfProdutoID.getText());
 		String nome = tfProdutoNome.getText();
 		String localizacao = tfProdutoLocalizacao.getText();
 		int qtdeMaxima = Integer.parseInt(tfProdutoQtdeMaxima.getText());

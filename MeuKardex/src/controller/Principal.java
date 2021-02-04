@@ -25,12 +25,12 @@ public class Principal {
 
 	
 	public static void main(String[] args) {
-		testaConexao();
+		//testaConexao();
 		
 
 		//produtos = seedProdutoManual();
 		seedProdutoCSV();
-		seedFornecedor();
+		//seedFornecedor();
 		ArrayList<Cliente> clientes = seedCliente();
 
 		Tela frame = new Tela();
