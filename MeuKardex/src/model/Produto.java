@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import dao.ProdutoDAO;
+
 public class Produto {
 
 	private int id;
@@ -36,8 +38,10 @@ public class Produto {
 	}
 	
 	private void gravar () {
-		lista.add(this);
-		gravaCSV();
+		ProdutoDAO dao = new ProdutoDAO();
+		dao.insert(this);
+		//lista.add(this);
+		//gravaCSV();
 	}
 	
 	private void gravaCSV() {

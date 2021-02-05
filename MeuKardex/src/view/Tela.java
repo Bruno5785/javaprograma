@@ -16,6 +16,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,8 +29,8 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.text.DefaultFormatterFactory;
 
-import controller.Principal;
 import model.Fornecedor;
 import model.Produto;
 import util.Configura;
@@ -83,9 +84,7 @@ public class Tela extends JFrame {
 	private JLabel lbFornecedoresTelefone;
 	private JTextField tfFornecedorEmail;
 	private JLabel lbFornecedoresEmail;
-	private JTextField tfFornecedorTelefone;
 	private JLabel lbFornecedoresID;
-	private JTextField tfFornecedorCNPJ;
 	private JLabel lbClientesID;
 	private JTextField tfClientesID;
 	private JLabel lbClientesCPF;
@@ -99,6 +98,9 @@ public class Tela extends JFrame {
 	private JPanel pnEntrada;
 	private JPanel pnSaida;
 	private JPanel pnMovimentacao;
+	private JFormattedTextField tfFornecedorCNPJ;
+	private JFormattedTextField tfFornecedorTelefone;
+	private SpringLayout sl_pnFornecedores;
 
 
 	/**
@@ -106,11 +108,22 @@ public class Tela extends JFrame {
 	 */
 	public Tela() {
 		initComponents();
+		
+		tfFornecedorTelefone = new JFormattedTextField();
+		sl_pnFornecedores.putConstraint(SpringLayout.NORTH, tfFornecedorTelefone, 24, SpringLayout.NORTH, lbFornecedoresTelefone);
+		sl_pnFornecedores.putConstraint(SpringLayout.WEST, tfFornecedorTelefone, 19, SpringLayout.EAST, lbFornecedoresTelefone);
+		sl_pnFornecedores.putConstraint(SpringLayout.EAST, tfFornecedorTelefone, 194, SpringLayout.EAST, lbFornecedoresTelefone);
+		pnFornecedores.add(tfFornecedorTelefone);
 		setTitle("Sistema de Controle de Estoque");
 		setLocationRelativeTo(null);
 		setTemas();
 		setPainel(Paineis.PRODUTOS);
 		limpaTelaProduto();
+		tfFornecedorCNPJ.setFormatterFactory(
+				new DefaultFormatterFactory(util.Mascara.cnpj()));
+		tfFornecedorTelefone.setFormatterFactory(
+				new DefaultFormatterFactory(util.Mascara.telefone()));
+		
 	}
 	private void initComponents() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -278,6 +291,7 @@ public class Tela extends JFrame {
 		lbProdutoID.setFont(new Font("Calibri", Font.PLAIN, 18));
 		
 		tfProdutoID = new JTextField();
+		tfProdutoID.setEnabled(false);
 		tfProdutoID.setColumns(10);
 		
 		lbProdutoNome = new JLabel("Nome:");
@@ -499,27 +513,15 @@ public class Tela extends JFrame {
 		lbFornecedoresEmail = new JLabel("Email:");
 		lbFornecedoresEmail.setFont(new Font("Calibri", Font.PLAIN, 18));
 		
-		tfFornecedorTelefone = new JTextField();
-		tfFornecedorTelefone.setColumns(10);
-		
 		lbFornecedoresID = new JLabel("C\u00F3digo:");
 		lbFornecedoresID.setFont(new Font("Calibri", Font.PLAIN, 18));
-		
-		tfFornecedorCNPJ = new JTextField();
-		tfFornecedorCNPJ.setColumns(10);
-		SpringLayout sl_pnFornecedores = new SpringLayout();
+		sl_pnFornecedores = new SpringLayout();
 		sl_pnFornecedores.putConstraint(SpringLayout.EAST, tfFornecedorNome, 489, SpringLayout.WEST, pnFornecedores);
 		sl_pnFornecedores.putConstraint(SpringLayout.NORTH, tfFornecedorEmail, 0, SpringLayout.NORTH, lbFornecedoresEmail);
 		sl_pnFornecedores.putConstraint(SpringLayout.WEST, tfFornecedorEmail, 0, SpringLayout.WEST, tfFornecedorID);
 		sl_pnFornecedores.putConstraint(SpringLayout.EAST, tfFornecedorEmail, 489, SpringLayout.WEST, pnFornecedores);
-		sl_pnFornecedores.putConstraint(SpringLayout.NORTH, tfFornecedorTelefone, 24, SpringLayout.NORTH, lbFornecedoresTelefone);
-		sl_pnFornecedores.putConstraint(SpringLayout.WEST, tfFornecedorTelefone, 0, SpringLayout.WEST, tfFornecedorID);
-		sl_pnFornecedores.putConstraint(SpringLayout.EAST, tfFornecedorTelefone, 335, SpringLayout.WEST, pnFornecedores);
 		sl_pnFornecedores.putConstraint(SpringLayout.NORTH, tfFornecedorNome, 0, SpringLayout.NORTH, lbFornecedoresNome);
 		sl_pnFornecedores.putConstraint(SpringLayout.WEST, tfFornecedorNome, 0, SpringLayout.WEST, tfFornecedorID);
-		sl_pnFornecedores.putConstraint(SpringLayout.NORTH, tfFornecedorCNPJ, 0, SpringLayout.NORTH, lbFornecedoresCNPJ);
-		sl_pnFornecedores.putConstraint(SpringLayout.WEST, tfFornecedorCNPJ, 0, SpringLayout.WEST, tfFornecedorID);
-		sl_pnFornecedores.putConstraint(SpringLayout.EAST, tfFornecedorCNPJ, 333, SpringLayout.WEST, pnFornecedores);
 		sl_pnFornecedores.putConstraint(SpringLayout.NORTH, tfFornecedorID, 0, SpringLayout.NORTH, lbFornecedoresID);
 		sl_pnFornecedores.putConstraint(SpringLayout.WEST, tfFornecedorID, 17, SpringLayout.EAST, lbFornecedoresID);
 		sl_pnFornecedores.putConstraint(SpringLayout.EAST, tfFornecedorID, 244, SpringLayout.WEST, pnFornecedores);
@@ -543,11 +545,15 @@ public class Tela extends JFrame {
 		pnFornecedores.add(lbFornecedoresCNPJ);
 		pnFornecedores.add(lbFornecedoresNome);
 		pnFornecedores.add(tfFornecedorID);
-		pnFornecedores.add(tfFornecedorCNPJ);
 		pnFornecedores.add(lbFornecedores);
 		pnFornecedores.add(tfFornecedorNome);
-		pnFornecedores.add(tfFornecedorTelefone);
 		pnFornecedores.add(tfFornecedorEmail);
+		
+		tfFornecedorCNPJ = new JFormattedTextField();
+		sl_pnFornecedores.putConstraint(SpringLayout.NORTH, tfFornecedorCNPJ, 42, SpringLayout.SOUTH, tfFornecedorID);
+		sl_pnFornecedores.putConstraint(SpringLayout.WEST, tfFornecedorCNPJ, 17, SpringLayout.EAST, lbFornecedoresCNPJ);
+		sl_pnFornecedores.putConstraint(SpringLayout.EAST, tfFornecedorCNPJ, 161, SpringLayout.EAST, lbFornecedoresCNPJ);
+		pnFornecedores.add(tfFornecedorCNPJ);
 		
 		pnEntrada = new JPanel();
 		pnCentral.add(pnEntrada, "name_1279885289016100");

@@ -29,7 +29,7 @@ public class Principal {
 		
 
 		//produtos = seedProdutoManual();
-		seedProdutoCSV();
+		//seedProdutoCSV();
 		//seedFornecedor();
 		ArrayList<Cliente> clientes = seedCliente();
 

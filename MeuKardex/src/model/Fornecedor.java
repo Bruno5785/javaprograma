@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 
 import dao.FornecedorDAO;
+import util.Verifica;
 
 public class Fornecedor {
 	
@@ -57,9 +58,20 @@ public class Fornecedor {
 	public String getCnpj() {
 		return cnpj;
 	}
+	
+	/**
+	 * Atribui CNPJ ao fornecedor.
+	 * @param cnpj o CNPJ  a ser registrado.
+	 * @throws IllegalArgumentException quando o CNPJ é inválido.
+	 */
 
 	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
+		if (Verifica.isCNPJ(cnpj)) {
+			this.cnpj = cnpj;
+		} else {
+			throw new IllegalArgumentException("CNPJ inválido");
+		}
+		
 	}
 
 	public String getNome() {
@@ -83,7 +95,7 @@ public class Fornecedor {
 	}
 
 	public void setTelefone(String telefone) {
-		if (telefone.length() != 10) {
+		if ((telefone.length() != 14) && (telefone.length() !=10)) {
 			throw new IllegalArgumentException("Telefone deve ter 10 dígitos!");
 		}
 		this.telefone = telefone;
