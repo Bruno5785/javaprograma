@@ -78,4 +78,11 @@ public class Verifica {
 		}
 	}
 
+	public static boolean isCPF(String cpf) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	
+
 }

@@ -20,6 +20,8 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SpringLayout;
@@ -27,18 +29,18 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.DefaultFormatterFactory;
 
+import model.Cliente;
 import model.Fornecedor;
 import model.Produto;
 import util.Configura;
 import util.Converte;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.border.EtchedBorder;
-import javax.swing.table.DefaultTableModel;
+import util.Mascara;
 
 public class Tela extends JFrame {
 
@@ -92,11 +94,9 @@ public class Tela extends JFrame {
 	private JLabel lbClientesID;
 	private JTextField tfClientesID;
 	private JLabel lbClientesCPF;
-	private JTextField tfClientesCPF;
 	private JLabel lbClientesNome;
 	private JTextField tfClientesNome;
 	private JLabel lbClientesCelular;
-	private JTextField tfClientesCelular;
 	private JLabel lbClientesEmail;
 	private JTextField tfClientesEmail;
 	private JPanel pnEntradas;
@@ -112,6 +112,8 @@ public class Tela extends JFrame {
 	private JPanel pnSaidaTitulo;
 	private JLabel lbSaida;
 	private JScrollPane tbSaida;
+	private JFormattedTextField tfClientesCPF;
+	private JFormattedTextField tfClientesCelular;
 
 
 	/**
@@ -130,10 +132,8 @@ public class Tela extends JFrame {
 		setTemas();
 		setPainel(Paineis.PRODUTOS);
 		limpaTelaProduto();
-		tfFornecedorCNPJ.setFormatterFactory(
-				new DefaultFormatterFactory(util.Mascara.cnpj()));
-		tfFornecedorTelefone.setFormatterFactory(
-				new DefaultFormatterFactory(util.Mascara.telefone()));
+		limpaTelaCliente();
+		setMascaras();
 		
 	}
 	private void initComponents() {
@@ -253,6 +253,7 @@ public class Tela extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (painel == Paineis.PRODUTOS)listaProduto();
 				else if (painel == Paineis.FORNECEDORES) listaFornecedor();
+				else if (painel == Paineis.CLIENTES) listaCliente();
 			}
 		});
 		btnListar.setFont(new Font("Calibri", Font.PLAIN, 14));
@@ -261,8 +262,10 @@ public class Tela extends JFrame {
 		btnLimpar = new JButton("Limpar");
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (painel == Paineis.PRODUTOS)listaProduto();
-				else if (painel == Paineis.FORNECEDORES) listaFornecedor();
+				if (painel == Paineis.PRODUTOS)limpaTelaProduto();
+				else if (painel == Paineis.FORNECEDORES) limpaTelaFornecedor();
+				else if (painel == Paineis.CLIENTES) limpaTelaCliente();
+				
 			}
 		});
 		btnLimpar.setFont(new Font("Calibri", Font.PLAIN, 14));
@@ -273,6 +276,8 @@ public class Tela extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (painel == Paineis.PRODUTOS)limpaTelaProduto();
 				else if (painel == Paineis.FORNECEDORES) limpaTelaFornecedor();
+				else if (painel == Paineis.CLIENTES) limpaTelaCliente();
+				
 			}
 		});
 		btnCancelar.setFont(new Font("Calibri", Font.PLAIN, 14));
@@ -283,6 +288,7 @@ public class Tela extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (painel == Paineis.PRODUTOS) gravaProduto();
 				else if (painel == Paineis.FORNECEDORES) gravaFornecedor();
+				else if (painel == Paineis.CLIENTES) gravaCliente();
 			}
 		});
 		btnGravar.setFont(new Font("Calibri", Font.PLAIN, 14));
@@ -417,13 +423,11 @@ public class Tela extends JFrame {
 		lbClientesID.setFont(new Font("Calibri", Font.PLAIN, 18));
 		
 		tfClientesID = new JTextField();
+		tfClientesID.setEnabled(false);
 		tfClientesID.setColumns(10);
 		
 		lbClientesCPF = new JLabel("CPF:");
 		lbClientesCPF.setFont(new Font("Calibri", Font.PLAIN, 18));
-		
-		tfClientesCPF = new JTextField();
-		tfClientesCPF.setColumns(10);
 		
 		lbClientesNome = new JLabel("Nome:");
 		lbClientesNome.setFont(new Font("Calibri", Font.PLAIN, 18));
@@ -434,14 +438,15 @@ public class Tela extends JFrame {
 		lbClientesCelular = new JLabel("Celular:");
 		lbClientesCelular.setFont(new Font("Calibri", Font.PLAIN, 18));
 		
-		tfClientesCelular = new JTextField();
-		tfClientesCelular.setColumns(10);
-		
 		lbClientesEmail = new JLabel("Email:");
 		lbClientesEmail.setFont(new Font("Calibri", Font.PLAIN, 18));
 		
 		tfClientesEmail = new JTextField();
 		tfClientesEmail.setColumns(10);
+		
+		tfClientesCPF = new JFormattedTextField();
+		
+		tfClientesCelular = new JFormattedTextField();
 		GroupLayout gl_pnClientes = new GroupLayout(pnClientes);
 		gl_pnClientes.setHorizontalGroup(
 			gl_pnClientes.createParallelGroup(Alignment.LEADING)
@@ -456,12 +461,13 @@ public class Tela extends JFrame {
 								.addComponent(lbClientesCelular)
 								.addComponent(lbClientesEmail))
 							.addGap(31)
-							.addGroup(gl_pnClientes.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(tfClientesID, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(tfClientesCPF, GroupLayout.PREFERRED_SIZE, 178, GroupLayout.PREFERRED_SIZE)
-								.addComponent(tfClientesNome, GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
-								.addComponent(tfClientesCelular, GroupLayout.PREFERRED_SIZE, 205, GroupLayout.PREFERRED_SIZE)
-								.addComponent(tfClientesEmail)))
+							.addGroup(gl_pnClientes.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_pnClientes.createParallelGroup(Alignment.LEADING, false)
+									.addComponent(tfClientesID, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addComponent(tfClientesNome, GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
+									.addComponent(tfClientesEmail))
+								.addComponent(tfClientesCelular, GroupLayout.PREFERRED_SIZE, 203, GroupLayout.PREFERRED_SIZE)
+								.addComponent(tfClientesCPF, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE)))
 						.addGroup(gl_pnClientes.createSequentialGroup()
 							.addGap(234)
 							.addComponent(lbClientes)))
@@ -485,7 +491,7 @@ public class Tela extends JFrame {
 						.addComponent(lbClientesNome)
 						.addComponent(tfClientesNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(31)
-					.addGroup(gl_pnClientes.createParallelGroup(Alignment.TRAILING)
+					.addGroup(gl_pnClientes.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lbClientesCelular)
 						.addComponent(tfClientesCelular, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(40)
@@ -643,6 +649,15 @@ public class Tela extends JFrame {
 		
 	}
 	
+	private void limpaTelaCliente() {
+		tfClientesID.setText("");
+		tfClientesCPF.setText("");
+		tfClientesNome.setText("");
+		tfClientesCelular.setText("");
+		tfClientesEmail.setText("");
+		tfClientesCPF.requestFocus();
+	}
+	
 
 	private void limpaTelaFornecedor() {
 		tfFornecedorID.setText("");
@@ -661,6 +676,16 @@ public class Tela extends JFrame {
 		tfProdutoQtdeMinima.setText("");
 		tfProdutoQtdeEstoque.setText("");
 		tfProdutoNome.requestFocus();
+	}
+	
+	private void gravaCliente() {
+		int id = Converte.toInt(tfClientesID.getText());
+		String cpf = tfClientesCPF.getText();
+		String nome = tfClientesNome.getText();
+		String celular = tfClientesCelular.getText();
+		String email = tfClientesEmail.getText();
+		new Cliente(cpf,nome,celular,email);
+		limpaTelaCliente();
 	}
 	
 	private void gravaFornecedor() {
@@ -686,6 +711,12 @@ public class Tela extends JFrame {
 		limpaTelaProduto();
 	}
 	
+	private void listaCliente() {
+		for (Cliente c: Cliente.getLista()) {
+			System.out.println(c);
+		}
+	}
+	
 	private void listaProduto() {
 		for (Produto p: Produto.getLista()) {
 			System.out.println(p);
@@ -696,5 +727,20 @@ public class Tela extends JFrame {
 			System.out.println(f);
 		}
 		}
+	private void setMascaras() {
+		tfFornecedorCNPJ.setFormatterFactory(
+				new DefaultFormatterFactory(
+				Mascara.cnpj()));
+		tfFornecedorTelefone.setFormatterFactory(
+				new DefaultFormatterFactory(
+				Mascara.telefone()));
+		tfClientesCPF.setFormatterFactory(
+				new DefaultFormatterFactory(
+				Mascara.cpf()));
+		tfClientesCelular.setFormatterFactory(
+				new DefaultFormatterFactory(
+				Mascara.celular()));
+				
+	}
 }
 

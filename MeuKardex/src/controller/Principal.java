@@ -9,6 +9,7 @@ import java.util.Date;
 
 import javax.swing.JOptionPane;
 
+import dao.ClienteDAO;
 import dao.ConnectionFactory;
 import dao.EntradaDAO;
 import model.Cliente;
@@ -32,7 +33,9 @@ public class Principal {
 		//seedFornecedor();
 		//ArrayList<Cliente> clientes = seedCliente();
 		//seedEntrada();  // teste do EntradaDAO.insert
-		testeEntradaDAOSelect();
+		//testeEntradaDAOSelect();
+		//testeClienteDAOSelect();
+		
 
 		Tela frame = new Tela();
 		frame.setVisible(true);
@@ -49,6 +52,14 @@ public class Principal {
 		 * 
 		 */
 	}
+	
+	public static void testeClienteDAOSelect() {
+		ClienteDAO dao = new ClienteDAO();
+		for (Cliente e: dao.select()) {
+			System.out.println(e);
+		}
+	}
+	
 	public static void testeEntradaDAOSelect() {
 		EntradaDAO dao = new EntradaDAO();
 		for (Entrada e: dao.select()) {

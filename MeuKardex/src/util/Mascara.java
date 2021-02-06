@@ -27,5 +27,28 @@ public class Mascara {
 		}
 		return mf;
 	}
+	
+	public static MaskFormatter celular () {
+		MaskFormatter mf = null;
+		try {
+			mf = new MaskFormatter ("(##)#-####-####");
+			mf.setPlaceholderCharacter('_');
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return mf;
+	}
+	
 
+	public static MaskFormatter cpf () {
+		MaskFormatter mf = null;
+		try {
+			mf = new MaskFormatter ("###.###.###-##");
+			mf.setPlaceholderCharacter('_');
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return mf;
+	}
+	
 }
