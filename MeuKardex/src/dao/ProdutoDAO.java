@@ -17,7 +17,7 @@ public class ProdutoDAO implements DAO<Produto>{
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		String sql = "INSERT INTO produto " +
-					 "(nome,localizacao,qtdemaxima,qtdeminima,qtdeestoque) " + 
+					 "(nome,localizacao,qtdeminima,qtdemaxima,qtdeestoque) " + 
 					 "VALUES (?,?,?,?,?)";
 		
 		try {
@@ -52,7 +52,7 @@ public class ProdutoDAO implements DAO<Produto>{
 		Connection con = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		String sql = "SELECT id,nome,localizacao,qtdemaxima,qtdeminima,qtdeestoque" +
+		String sql = "SELECT id,nome,localizacao,qtdeminima,qtdemaxima,qtdeestoque" +
 					 " FROM produto" + 
 					 " ORDER BY nome ";
 		try {
@@ -82,7 +82,7 @@ public class ProdutoDAO implements DAO<Produto>{
 		Connection con = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		String sql = "SELECT id,nome,localizacao,qtdemaxima,qtdeminima,qtdeestoque" +
+		String sql = "SELECT id,nome,localizacao,qtdeminima,qtdemaxima,qtdeestoque" +
 					 " FROM produto" + 
 					 " WHERE ID = ? ";
 		try {

@@ -12,8 +12,8 @@ public class Produto {
 	private int id;
 	private String nome;
 	private String localizacao;
-	private int qtdeMaxima;
 	private int qtdeMinima;
+	private int qtdeMaxima;
 	private int qtdeEstoque;
 	private static ArrayList<Produto> lista = new ArrayList<>();
 	public static final String ARQUIVO_PRODUTOS = "C:\\Users\\brunp\\git\\javaprograma\\MeuKardex\\db\\Produtos.csv";
@@ -23,30 +23,30 @@ public class Produto {
 		super();
 	}
 	
-	public Produto(String nome, String localizacao, int qtdeMaxima, int qtdeMinima, int qtdeEstoque) {
+	public Produto(String nome, String localizacao, int qtdeMinima, int qtdeMaxima, int qtdeEstoque) {
 		super();
 		setId(0);
 		setNome(nome);
 		setLocalizacao(localizacao);
 		if ((qtdeMaxima < 1) || (qtdeMaxima > 1000)) 
 			qtdeMaxima = 100;  // valor default
-		setQtdeMaxima(qtdeMaxima);
 		setQtdeMinima(qtdeMinima);
+		setQtdeMaxima(qtdeMaxima);
 		setQtdeEstoque(qtdeEstoque);
 		gravar();
 		
 	}
 	
 
-	public Produto(int id, String nome, String localizacao, int qtdeMaxima, int qtdeMinima, int qtdeEstoque) {
+	public Produto(int id, String nome, String localizacao, int qtdeMinima, int qtdeMaxima, int qtdeEstoque) {
 		super();
 		setId(id);
 		setNome(nome);
 		setLocalizacao(localizacao);
 		if ((qtdeMaxima < 1) || (qtdeMaxima > 1000)) 
 			qtdeMaxima = 100;  // valor default
-		setQtdeMaxima(qtdeMaxima);
 		setQtdeMinima(qtdeMinima);
+		setQtdeMaxima(qtdeMaxima);
 		setQtdeEstoque(qtdeEstoque);
 		
 		
@@ -63,13 +63,13 @@ public class Produto {
 		try {
 		FileWriter fw = new FileWriter(ARQUIVO_PRODUTOS);
 		BufferedWriter bw = new BufferedWriter(fw);
-		bw.write("id,nome,localizacao,qtdeMaxima,qtdeMinima,qtedeEstoque\n");
+		bw.write("id,nome,localizacao,qtdeMinima,qtdeMaxima,qtedeEstoque\n");
 		for (Produto p: getLista()) {
 			bw.write(id);
 			bw.write(p.getId() + "," );
 			bw.write(p.getLocalizacao() + ",");
-			bw.write(p.getQtdeMaxima() + ",");
 			bw.write(p.getQtdeMinima() + ",");
+			bw.write(p.getQtdeMaxima() + ",");
 			bw.write(p.getQtdeEstoque() + "\n");
 		}
 		bw.close();
