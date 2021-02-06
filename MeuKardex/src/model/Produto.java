@@ -22,6 +22,21 @@ public class Produto {
 	public Produto() {
 		super();
 	}
+	
+	public Produto(String nome, String localizacao, int qtdeMaxima, int qtdeMinima, int qtdeEstoque) {
+		super();
+		setId(0);
+		setNome(nome);
+		setLocalizacao(localizacao);
+		if ((qtdeMaxima < 1) || (qtdeMaxima > 1000)) 
+			qtdeMaxima = 100;  // valor default
+		setQtdeMaxima(qtdeMaxima);
+		setQtdeMinima(qtdeMinima);
+		setQtdeEstoque(qtdeEstoque);
+		gravar();
+		
+	}
+	
 
 	public Produto(int id, String nome, String localizacao, int qtdeMaxima, int qtdeMinima, int qtdeEstoque) {
 		super();
@@ -33,7 +48,7 @@ public class Produto {
 		setQtdeMaxima(qtdeMaxima);
 		setQtdeMinima(qtdeMinima);
 		setQtdeEstoque(qtdeEstoque);
-		gravar();
+		
 		
 	}
 	
@@ -68,7 +83,8 @@ public class Produto {
 	
 	
 	public static ArrayList<Produto> getLista() {
-		return lista;
+		return (new ProdutoDAO().select());
+		//eturn lista;
 	}
 	
 

@@ -2,12 +2,23 @@ package model;
 
 import java.util.Date;
 
+import dao.EntradaDAO;
+
+
 public class Entrada extends Kardex {
 	
 	private Fornecedor fornecedor;
 
-	public Entrada() {
-		super();
+	public Entrada(Produto produto,
+		       	   Fornecedor fornecedor,
+		       	   Date data, 
+		       	   String doc, 
+		       	   int qtde, 
+		       	   double valor) {
+		super(0,produto,data,doc,qtde,valor);
+		setFornecedor(fornecedor);
+		gravar();
+		produto.entrada(this);
 	}
 	
 	public Entrada(int id, 
@@ -22,6 +33,10 @@ public class Entrada extends Kardex {
 		produto.entrada(this);
 	}
 
+	private void gravar() {
+		new EntradaDAO().insert(this);
+	}
+	
 	public Fornecedor getFornecedor() {
 		return fornecedor;
 	}
@@ -42,5 +57,5 @@ public class Entrada extends Kardex {
 				", qtde=" + getQtde() + 
 				", valor=" + getValor() + "]";
 	}
-
+	
 }

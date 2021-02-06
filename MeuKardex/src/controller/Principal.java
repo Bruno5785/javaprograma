@@ -10,6 +10,7 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 
 import dao.ConnectionFactory;
+import dao.EntradaDAO;
 import model.Cliente;
 import model.Entrada;
 import model.Fornecedor;
@@ -18,20 +19,20 @@ import model.Saida;
 import view.Tela;
 
 public class Principal {
-	
-	//public static ArrayList<Produto> produtos;
-	public static final String ARQUIVO_PRODUTOS = "C:\\Users\\brunp\\git\\javaprograma\\MeuKardex\\db\\Produtos.csv";
-	
 
-	
+	//public static ArrayList<Produto> produtos;
+	public static final String ARQUIVO_PRODUTOS = "C:/Projects/JavaProgrammer/Kardex/db/Produtos.csv";
+
 	public static void main(String[] args) {
+
 		//testaConexao();
 		
-
 		//produtos = seedProdutoManual();
 		//seedProdutoCSV();
 		//seedFornecedor();
-		ArrayList<Cliente> clientes = seedCliente();
+		//ArrayList<Cliente> clientes = seedCliente();
+		//seedEntrada();  // teste do EntradaDAO.insert
+		testeEntradaDAOSelect();
 
 		Tela frame = new Tela();
 		frame.setVisible(true);
@@ -47,19 +48,23 @@ public class Principal {
 		 * System.out.println(s); System.out.println(p);
 		 * 
 		 */
-
-		
 	}
+	public static void testeEntradaDAOSelect() {
+		EntradaDAO dao = new EntradaDAO();
+		for (Entrada e: dao.select()) {
+			System.out.println(e);
+		}
+	}
+	
 	public static void testaConexao() {
 		Connection con = ConnectionFactory.getConnection();
 		if (con != null) {
 			JOptionPane.showMessageDialog(null,"Conectou!");
 			ConnectionFactory.closeConnection(con);
 		} else {
-			JOptionPane.showMessageDialog(null, "Servidor não Disponivel");
-			ConnectionFactory.closeConnection(con);
+			JOptionPane.showMessageDialog(null,"Servidor não disponível!");
+			System.exit(0);  // encerra a aplicação
 		}
-		
 	}
 
 	public static Saida seedSaida(Produto p, Cliente c) {
@@ -72,13 +77,17 @@ public class Principal {
 		return s;
 	}
 
-	public static Entrada seedEntrada(Produto p, Fornecedor f) {
+	public static Entrada seedEntrada() {
+		Produto p = new Produto(1,"nomexxxx","loc",10,1,8);
+		Fornecedor f = new Fornecedor(3,"93.979.377/0001-15",
+									  " nomexxxx","(11) 1234-5678",
+								 	  " email@email.com");
 		int id = 1;
-		Date data = new Date("01/20/2021");
-		String doc = "NF 999";
+		Date data = new Date("02/05/2021");
+		String doc = "NF 959";
 		int qtde = 20;
 		double valor = 350.00;
-		Entrada e = new Entrada(id, p, f, data, doc, qtde, valor);
+		Entrada e = new Entrada(p, f, data, doc, qtde, valor);
 		return e;
 	}
 
@@ -114,7 +123,7 @@ public class Principal {
 					int qtdeMaxima = Integer.parseInt(campos[3]);
 					int qtdeMinima = Integer.parseInt(campos[4]);
 					int qtdeEstoque = Integer.parseInt(campos[5]);
-					new Produto(id, nome, localizacao, qtdeMaxima, qtdeMinima, qtdeEstoque);
+					new Produto(nome, localizacao, qtdeMaxima, qtdeMinima, qtdeEstoque);
 				}
 			} while (linha != null);
 			br.close();

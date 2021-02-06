@@ -35,6 +35,10 @@ import model.Fornecedor;
 import model.Produto;
 import util.Configura;
 import util.Converte;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.border.EtchedBorder;
+import javax.swing.table.DefaultTableModel;
 
 public class Tela extends JFrame {
 
@@ -95,12 +99,19 @@ public class Tela extends JFrame {
 	private JTextField tfClientesCelular;
 	private JLabel lbClientesEmail;
 	private JTextField tfClientesEmail;
-	private JPanel pnEntrada;
-	private JPanel pnSaida;
+	private JPanel pnEntradas;
+	private JPanel pnSaidas;
 	private JPanel pnMovimentacao;
 	private JFormattedTextField tfFornecedorCNPJ;
 	private JFormattedTextField tfFornecedorTelefone;
 	private SpringLayout sl_pnFornecedores;
+	private JPanel pnEntraTitulo;
+	private JLabel lbEntradas;
+	private JScrollPane scrollPane;
+	private JTable tbEntrada;
+	private JPanel pnSaidaTitulo;
+	private JLabel lbSaida;
+	private JScrollPane tbSaida;
 
 
 	/**
@@ -555,11 +566,54 @@ public class Tela extends JFrame {
 		sl_pnFornecedores.putConstraint(SpringLayout.EAST, tfFornecedorCNPJ, 161, SpringLayout.EAST, lbFornecedoresCNPJ);
 		pnFornecedores.add(tfFornecedorCNPJ);
 		
-		pnEntrada = new JPanel();
-		pnCentral.add(pnEntrada, "name_1279885289016100");
+		pnEntradas = new JPanel();
+		pnCentral.add(pnEntradas, "name_1279885289016100");
+		pnEntradas.setLayout(new BorderLayout(0, 0));
 		
-		pnSaida = new JPanel();
-		pnCentral.add(pnSaida, "name_1279969504573900");
+		pnEntraTitulo = new JPanel();
+		pnEntradas.add(pnEntraTitulo, BorderLayout.NORTH);
+		
+		lbEntradas = new JLabel("Entradas");
+		lbEntradas.setFont(new Font("Calibri", Font.PLAIN, 30));
+		pnEntraTitulo.add(lbEntradas);
+		
+		scrollPane = new JScrollPane();
+		pnEntradas.add(scrollPane, BorderLayout.CENTER);
+		
+		tbEntrada = new JTable();
+		tbEntrada.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+			},
+			new String[] {
+				"New column", "New column", "New column", "New column", "New column"
+			}
+		));
+		tbEntrada.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		scrollPane.setViewportView(tbEntrada);
+		
+		pnSaidas = new JPanel();
+		pnCentral.add(pnSaidas, "name_1279969504573900");
+		pnSaidas.setLayout(new BorderLayout(0, 0));
+		
+		pnSaidaTitulo = new JPanel();
+		pnSaidas.add(pnSaidaTitulo, BorderLayout.NORTH);
+		
+		lbSaida = new JLabel("Sa\u00EDda");
+		lbSaida.setFont(new Font("Calibri", Font.BOLD, 30));
+		pnSaidaTitulo.add(lbSaida);
+		
+		tbSaida = new JScrollPane();
+		pnSaidas.add(tbSaida, BorderLayout.CENTER);
 		
 		pnMovimentacao = new JPanel();
 		pnCentral.add(pnMovimentacao, "name_1279988617614600");
@@ -606,7 +660,7 @@ public class Tela extends JFrame {
 		tfProdutoQtdeMaxima.setText("");
 		tfProdutoQtdeMinima.setText("");
 		tfProdutoQtdeEstoque.setText("");
-		tfProdutoID.requestFocus();
+		tfProdutoNome.requestFocus();
 	}
 	
 	private void gravaFornecedor() {
@@ -626,8 +680,8 @@ public class Tela extends JFrame {
 		int qtdeMaxima = Integer.parseInt(tfProdutoQtdeMaxima.getText());
 		int qtdeMinima = Integer.parseInt(tfProdutoQtdeMinima.getText());
 		int qtdeEstoque = Integer.parseInt(tfProdutoQtdeEstoque.getText());
-		Produto p = new Produto(id,nome,localizacao,
-								qtdeMaxima,qtdeMinima,qtdeEstoque);
+		Produto p = new Produto(nome,localizacao,
+								qtdeMinima,qtdeMaxima,qtdeEstoque);
 		//Principal.produtos.add(p);
 		limpaTelaProduto();
 	}

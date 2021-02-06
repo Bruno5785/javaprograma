@@ -17,7 +17,7 @@ public class ProdutoDAO implements DAO<Produto>{
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		String sql = "INSERT INTO produto " +
-					 "(nome,localizacao,qtdeminima,qtdemaxima,qtdeestoque) " + 
+					 "(nome,localizacao,qtdemaxima,qtdeminima,qtdeestoque) " + 
 					 "VALUES (?,?,?,?,?)";
 		
 		try {
@@ -42,13 +42,19 @@ public class ProdutoDAO implements DAO<Produto>{
 	@Override
 	
 
+	/**
+	 * Retorna a lista de produtos.
+	 * cadastrados no banco de dados
+	 * @return
+	 */
 	public ArrayList<Produto> select () {
 		ArrayList<Produto> lista = new ArrayList<>();
 		Connection con = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		String sql = "SELECT id,nome,localizacao,qtdeminima,qtdemaxima,qtdeestoque" +
-					 " FROM produto";
+		String sql = "SELECT id,nome,localizacao,qtdemaxima,qtdeminima,qtdeestoque" +
+					 " FROM produto" + 
+					 " ORDER BY nome ";
 		try {
 			con = ConnectionFactory.getConnection();
 			pst = con.prepareStatement(sql);
@@ -69,5 +75,36 @@ public class ProdutoDAO implements DAO<Produto>{
 			ConnectionFactory.closeConnection(con,pst,rs);
 		}
 		return lista;
+	}
+	
+	public Produto selec(int id) {
+		Produto produto = null;
+		Connection con = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		String sql = "SELECT id,nome,localizacao,qtdemaxima,qtdeminima,qtdeestoque" +
+					 " FROM produto" + 
+					 " WHERE ID = ? ";
+		try {
+			con = ConnectionFactory.getConnection();
+			pst = con.prepareStatement(sql);
+			pst.setInt(1, id);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				int codigo = rs.getInt(1);
+				String nome = rs.getString(2);
+				String localizacao = rs.getString(3);
+				int qtdeminima = rs.getInt(4);
+				int qtdemaxima = rs.getInt(5);
+				int qtdeestoque = rs.getInt(6);
+				produto =new Produto (codigo,nome,localizacao,qtdeminima,qtdemaxima,qtdeestoque);
+				
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+				} finally {
+			ConnectionFactory.closeConnection(con,pst,rs);
+		}
+		return produto;
 	}
 }
