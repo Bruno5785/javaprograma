@@ -20,7 +20,7 @@ public class Mascara {
 	public static MaskFormatter telefone () {
 		MaskFormatter mf = null;
 		try {
-			mf = new MaskFormatter ("(##)####-####");
+			mf = new MaskFormatter ("(##) ####-####");
 			mf.setPlaceholderCharacter('_');
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -44,6 +44,17 @@ public class Mascara {
 		MaskFormatter mf = null;
 		try {
 			mf = new MaskFormatter ("###.###.###-##");
+			mf.setPlaceholderCharacter('_');
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return mf;
+	}
+	
+	public static MaskFormatter Data () {
+		MaskFormatter mf = null;
+		try {
+			mf = new MaskFormatter ("##/##/####");
 			mf.setPlaceholderCharacter('_');
 		} catch (ParseException e) {
 			e.printStackTrace();

@@ -11,17 +11,17 @@ import model.Entrada;
 import model.Fornecedor;
 import model.Produto;
 import util.Converte;
+
+
 /**
- * A classe EntradaDAO provê a comunicação da 
+ *  A classe EntradaDAO provê a comunicação da 
  * classe model.Entrada com o banco
  * de dados. É responsável também pelo mapeamento 
  * O/R da classe.
- * 
- * @author Ricardo Drudi
- * @see model.Entrada
+ * @author brunp
+ *@see model.Entrada
  * @see <a href="http://conectadamente.com/pages/java/javaOOPPersistencia.html">
  *      Mapeamento Objeto Relacional</a>
- * 
  */
 public class EntradaDAO implements DAO<Entrada>{
 

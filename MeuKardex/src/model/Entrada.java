@@ -2,7 +2,10 @@ package model;
 
 import java.util.Date;
 
+import javax.swing.table.DefaultTableModel;
+
 import dao.EntradaDAO;
+import util.Converte;
 
 
 public class Entrada extends Kardex {
@@ -46,6 +49,30 @@ public class Entrada extends Kardex {
 			throw new IllegalArgumentException("Fornecedor não pode ser nulo!");
 		}
 		this.fornecedor = fornecedor;
+	}
+	
+	public static DefaultTableModel getTableModel () {
+		DefaultTableModel modelo = new DefaultTableModel();
+		modelo.addColumn("ID");
+		modelo.addColumn("Produto");
+		modelo.addColumn("Fornecedor");
+		modelo.addColumn("Data");
+		modelo.addColumn("Docto");
+		modelo.addColumn("Qtde");
+		modelo.addColumn("Valor");
+		EntradaDAO dao = new EntradaDAO();
+		for (Entrada e: dao.select() ) {
+			String [] row = { String.valueOf( e.getId()),
+							e.getProduto().getNome(),
+							e.getFornecedor().getNome(),
+							Converte.date2dmy(e.getData()),
+							e.getDoc(),
+							String.valueOf(e.getQtde()),
+							String.valueOf(e.getValor())
+					};
+			modelo.addRow(row);
+		}
+		return modelo;
 	}
 	
 	@Override

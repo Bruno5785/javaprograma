@@ -75,7 +75,7 @@ public abstract class Kardex {
 	}
 
 	public void setQtde(int qtde) {
-		if ((qtde < 1) || (qtde > 100)) {
+		if ((qtde < 1) || (qtde > 1000)) {
 			throw new IllegalArgumentException("Quantidade entre 1 e 1000!");
 		} else {
 			this.qtde = qtde;

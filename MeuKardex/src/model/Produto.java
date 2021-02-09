@@ -5,7 +5,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.table.DefaultTableModel;
+
 import dao.ProdutoDAO;
+import util.Converte;
 
 public class Produto {
 
@@ -168,6 +171,28 @@ public class Produto {
 		return "Produto [id=" + id + 
 				", nome=" + nome + 
 				", qtdeEstoque=" + qtdeEstoque + "]";
+	}
+	
+	public static DefaultTableModel getTableModel () {
+		DefaultTableModel modelo = new DefaultTableModel();
+		modelo.addColumn("ID");
+		modelo.addColumn("Nome");
+		modelo.addColumn("Localização");
+		modelo.addColumn("QtdeMínima");
+		modelo.addColumn("QtdeMáxima");
+		modelo.addColumn("QtdeEstoque");
+		ProdutoDAO dao = new ProdutoDAO();
+		for (Produto p: dao.select() ) {
+			String [] row = { String.valueOf( p.getId()),
+							p.getNome(),
+							p.getLocalizacao(),
+							String.valueOf(p.getQtdeMinima()),
+							String.valueOf(p.getQtdeMaxima()),
+							String.valueOf(p.getQtdeEstoque())
+					};
+			modelo.addRow(row);
+		}
+		return modelo;
 	}
 	
 }

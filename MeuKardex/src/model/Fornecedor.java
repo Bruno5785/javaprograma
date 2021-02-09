@@ -95,8 +95,8 @@ public class Fornecedor {
 	}
 
 	public void setTelefone(String telefone) {
-		if ((telefone.length() != 14) && (telefone.length() !=13)) {
-			throw new IllegalArgumentException("Telefone deve ter 13 dígitos!");
+		if ((telefone.length() != 14) && (telefone.length() !=10)) {
+			throw new IllegalArgumentException("Telefone deve ter 14 dígitos!");
 		}
 		this.telefone = telefone;
 	}
