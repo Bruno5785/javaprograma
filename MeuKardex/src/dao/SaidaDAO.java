@@ -1,5 +1,6 @@
 package dao;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,42 +8,32 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import model.Entrada;
-import model.Fornecedor;
+import model.Cliente;
 import model.Produto;
+import model.Saida;
 import util.Converte;
 
-/**
- * A classe EntradaDAO provê a comunicação da classe model.Entrada com o banco
- * de dados. É responsável também pelo mapeamento O/R da classe.
- * 
- * @author Ricardo Drudi
- * @see model.Entrada
- * @see <a href="http://conectadamente.com/pages/java/javaOOPPersistencia.html">
- *      Mapeamento Objeto Relacional</a>
- * 
- */
-public class EntradaDAO implements DAO<Entrada> {
+public class SaidaDAO implements DAO<Saida> {
 
 	/**
-	 * Gera a persistência da Entrada r no banco de dados.
+	 * Gera a persistência da Saida r no banco de dados.
 	 * 
-	 * @param r Um objeto da classe Entrada
+	 * @param r Um objeto da classe Saida
 	 */
 	@Override
-	public void insert(Entrada r) {
+	public void insert(Saida r) {
 		Connection con = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		String sql = "INSERT INTO entrada " + 
-					 "(produto,fornecedor,data," + 
+		String sql = "INSERT INTO Saida " + 
+					 "(produto,cliente,data," + 
 					 "doc,qtde,valor) " + 
 					 "VALUES (?,?,?,?,?,?) ";
 		try {
 			con = ConnectionFactory.getConnection();
 			pst = con.prepareStatement(sql);
 			pst.setInt(1, r.getProduto().getId());
-			pst.setInt(2, r.getFornecedor().getId());
+			pst.setInt(2, r.getCliente().getId());
 			pst.setString(3, Converte.date2dmy(r.getData()));
 			pst.setString(4, r.getDoc());
 			pst.setInt(5, r.getQtde());
@@ -56,17 +47,17 @@ public class EntradaDAO implements DAO<Entrada> {
 	}
 
 	/**
-	 * Atualiza os valores da Entrada r no banco de dados.
+	 * Atualiza os valores da Saida r no banco de dados.
 	 * 
-	 * @param r Um objeto da classe Entrada
+	 * @param r Um objeto da classe Saida
 	 */
-	public void update(Entrada r) {
+	public void update(Saida r) {
 		Connection con = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		String sql = "UPDATE entrada SET " + 
+		String sql = "UPDATE Saida SET " + 
 					 "produto = ?, " + 
-					 "fornecedor = ?, " + 
+					 "cliente = ?, " + 
 					 "data = ?, " + 
 					 "doc = ?, " + 
 					 "qtde = ?, " + 
@@ -76,7 +67,7 @@ public class EntradaDAO implements DAO<Entrada> {
 			con = ConnectionFactory.getConnection();
 			pst = con.prepareStatement(sql);
 			pst.setInt(1, r.getProduto().getId());
-			pst.setInt(2, r.getFornecedor().getId());
+			pst.setInt(2, r.getCliente().getId());
 			pst.setString(3, Converte.date2dmy(r.getData()));
 			pst.setString(4, r.getDoc());
 			pst.setInt(5, r.getQtde());
@@ -91,15 +82,15 @@ public class EntradaDAO implements DAO<Entrada> {
 	}
 
 	/**
-	 * Exclui um registro de Entrada no banco de dados.
+	 * Exclui um registro de Saida no banco de dados.
 	 * 
-	 * @param r Um objeto da classe Entrada
+	 * @param r Um objeto da classe Saida
 	 */
-	public void delete(Entrada r) {
+	public void delete(Saida r) {
 		Connection con = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		String sql = "DELETE FROM entrada " + 
+		String sql = "DELETE FROM Saida " + 
 					 "WHERE id = ? ";
 		try {
 			con = ConnectionFactory.getConnection();
@@ -114,17 +105,19 @@ public class EntradaDAO implements DAO<Entrada> {
 	}
 
 	/**
-	 * Retorna a lista de entrada lançadas no banco de dados.
+	 * Retorna a lista de Saida lançadas no banco de dados.
 	 * 
-	 * @return O ArrayList com objetos Entrada.
+	 * @return O ArrayList com objetos Saida.
 	 */
 	@Override
-	public ArrayList<Entrada> select() {
-		ArrayList<Entrada> lista = new ArrayList<>();
+	public ArrayList<Saida> select() {
+		ArrayList<Saida> lista = new ArrayList<>();
 		Connection con = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		String sql = "SELECT id,produto,fornecedor, " + "data,doc,qtde,valor " + "FROM entrada " + "ORDER BY data ";
+		String sql = "SELECT id,produto,cliente,data,doc,qtde,valor " + 
+					 "FROM Saida " + 
+					 "ORDER BY data ";
 		try {
 			con = ConnectionFactory.getConnection();
 			pst = con.prepareStatement(sql);
@@ -132,14 +125,14 @@ public class EntradaDAO implements DAO<Entrada> {
 			while (rs.next()) {
 				int codigo = rs.getInt(1);
 				int codProduto = rs.getInt(2);
-				int codFornecedor = rs.getInt(3);
+				int codCliente = rs.getInt(3);
 				Date data = Converte.str2date(rs.getString(4));
 				String doc = rs.getString(5);
 				int qtde = rs.getInt(6);
 				double valor = rs.getDouble(7);
 				Produto produto = new ProdutoDAO().select(codProduto);
-				Fornecedor fornecedor = new FornecedorDAO().select(codFornecedor);
-				lista.add(new Entrada(codigo, produto, fornecedor, data, doc, qtde, valor));
+				Cliente cliente = new ClienteDAO().select(codCliente);
+				lista.add(new Saida(codigo, produto, cliente, data, doc, qtde, valor));
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -150,18 +143,20 @@ public class EntradaDAO implements DAO<Entrada> {
 	}
 
 	/**
-	 * Pesquisa a entrada com código informado no banco de dados. Se encontrar,
-	 * retorna um objeto do tipo Entrada. Caso o código não exista no banco de
+	 * Pesquisa a Saida com código informado no banco de dados. Se encontrar,
+	 * retorna um objeto do tipo Saida. Caso o código não exista no banco de
 	 * dados, retorna null.
 	 * 
-	 * @return Um objeto do tipo Entrada
+	 * @return Um objeto do tipo Saida
 	 */
-	public Entrada select(int id) {
-		Entrada entrada = null;
+	public Saida select(int id) {
+		Saida Saida = null;
 		Connection con = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		String sql = "SELECT * " + "FROM entrada " + "WHERE id = ? ";
+		String sql = "SELECT id,produto,cliente,data,doc,qtde,valor " + 
+					 "FROM Saida " + 
+					 "WHERE id = ? ";
 		try {
 			con = ConnectionFactory.getConnection();
 			pst = con.prepareStatement(sql);
@@ -170,37 +165,36 @@ public class EntradaDAO implements DAO<Entrada> {
 			if (rs.next()) {
 				int codigo = rs.getInt(1);
 				int codProduto = rs.getInt(2);
-				int codFornecedor = rs.getInt(3);
+				int codCliente = rs.getInt(3);
 				Date data = Converte.str2date(rs.getString(4));
 				String doc = rs.getString(5);
 				int qtde = rs.getInt(6);
 				double valor = rs.getDouble(7);
 				Produto produto = new ProdutoDAO().select(codProduto);
-				Fornecedor fornecedor = new FornecedorDAO().select(codFornecedor);
-				entrada = new Entrada(codigo, produto, fornecedor, data, doc, qtde, valor);
+				Cliente cliente = new ClienteDAO().select(codCliente);
+				Saida = new Saida(codigo, produto, cliente, data, doc, qtde, valor);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {
 			ConnectionFactory.closeConnection(con, pst, rs);
 		}
-		return entrada;
+		return Saida;
 	}
 
 	/**
-	 * Retorna a lista de entradas de um mesmo produto
+	 * Retorna a lista de Saidas de um mesmo produto
 	 * registradas no banco de dados.
 	 * 
-	 * @return O ArrayList com objetos Entrada.
+	 * @return O ArrayList com objetos Saida.
 	 */
-	public ArrayList<Entrada> select(Produto p) {
-		ArrayList<Entrada> lista = new ArrayList<>();
+	public ArrayList<Saida> select(Produto p) {
+		ArrayList<Saida> lista = new ArrayList<>();
 		Connection con = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
-		String sql = "SELECT id,produto,fornecedor, " + 
-					 "data,doc,qtde,valor " + 
-					 "FROM entrada " +
+		String sql = "SELECT id,produto,cliente,data,doc,qtde,valor " + 
+					 "FROM Saida " +
 					 "WHERE produto = ? " +
 					 "ORDER BY data ";
 		try {
@@ -211,14 +205,14 @@ public class EntradaDAO implements DAO<Entrada> {
 			while (rs.next()) {
 				int codigo = rs.getInt(1);
 				int codProduto = rs.getInt(2);
-				int codFornecedor = rs.getInt(3);
+				int codCliente = rs.getInt(3);
 				Date data = Converte.str2date(rs.getString(4));
 				String doc = rs.getString(5);
 				int qtde = rs.getInt(6);
 				double valor = rs.getDouble(7);
 				Produto produto = new ProdutoDAO().select(codProduto);
-				Fornecedor fornecedor = new FornecedorDAO().select(codFornecedor);
-				lista.add(new Entrada(codigo, produto, fornecedor, data, doc, qtde, valor));
+				Cliente cliente = new ClienteDAO().select(codCliente);
+				lista.add(new Saida(codigo, produto, cliente, data, doc, qtde, valor));
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());

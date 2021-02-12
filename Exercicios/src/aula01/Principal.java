@@ -5,6 +5,8 @@ public class Principal {
 	public static void main(String[] args) {
 		System.out.println("Alô Mundo!");
 		aula01.Principal.variaveis();
+		//PauloHenrique();
+		
 	}
 
 	// imprimir as operações:
@@ -13,6 +15,11 @@ public class Principal {
 	//     multiplicação
 	//     divisão
 	//
+	
+	//public static void PauloHenrique() {
+		//System.out.println("Paulo");
+	//}
+	
 	public static void variaveis() {
 		int n1,n2,total;    // criação das variáveis
 		n1 = 10;			// atribuição de valores
@@ -35,4 +42,5 @@ public class Principal {
 		System.out.println("Método println da classe Principal.");
 	}
 
+	
 }

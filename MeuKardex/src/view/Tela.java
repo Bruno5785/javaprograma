@@ -120,6 +120,7 @@ public class Tela extends JFrame {
 	private JFormattedTextField tfClientesCPF;
 	private JFormattedTextField tfClientesCelular;
 	private JLabel lbIncluir;
+	private JTable table;
 
 
 	/**
@@ -654,12 +655,45 @@ public class Tela extends JFrame {
 		pnSaidaTitulo = new JPanel();
 		pnSaidas.add(pnSaidaTitulo, BorderLayout.NORTH);
 		
-		lbSaida = new JLabel("Sa\u00EDda");
+		lbSaida = new JLabel("Sa\u00EDdas");
 		lbSaida.setFont(new Font("Calibri", Font.BOLD, 30));
-		pnSaidaTitulo.add(lbSaida);
+		GroupLayout gl_pnSaidaTitulo = new GroupLayout(pnSaidaTitulo);
+		gl_pnSaidaTitulo.setHorizontalGroup(
+			gl_pnSaidaTitulo.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pnSaidaTitulo.createSequentialGroup()
+					.addGap(260)
+					.addComponent(lbSaida))
+		);
+		gl_pnSaidaTitulo.setVerticalGroup(
+			gl_pnSaidaTitulo.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pnSaidaTitulo.createSequentialGroup()
+					.addGap(5)
+					.addComponent(lbSaida))
+		);
+		pnSaidaTitulo.setLayout(gl_pnSaidaTitulo);
 		
 		tbSaida = new JScrollPane();
 		pnSaidas.add(tbSaida, BorderLayout.CENTER);
+		
+		table = new JTable();
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+				{null, null, null, null, null},
+			},
+			new String[] {
+				"New column", "New column", "New column", "New column", "New column"
+			}
+		));
+		tbSaida.setViewportView(table);
 		
 		pnMovimentacao = new JPanel();
 		pnCentral.add(pnMovimentacao, "name_1279988617614600");
@@ -782,7 +816,7 @@ public class Tela extends JFrame {
 	}
 	
 	private void listaCliente() {
-		for (Cliente c: Cliente.getLista()) {
+		for (Cliente c: Cliente.getLista1()) {
 			System.out.println(c);
 		}
 	}

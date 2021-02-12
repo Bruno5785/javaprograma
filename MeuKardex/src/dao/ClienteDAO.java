@@ -8,24 +8,13 @@ import java.util.ArrayList;
 
 import model.Cliente;
 
-/**
- * A classe FornecedorDAO provê a 
- * comunicação da classe model.Fornecedor
- * com o banco de dados. É responsável também
- * pelo mapeamento O/R da classe.
- * @author brunp
- * @see model.Fornecedor
- * @see <a href="http://conectadamente.com/pages/java/javaOOPPersistencia.html">
- * Mapeamento Objeto Relacional</a>
- */
+public class ClienteDAO implements DAO<Cliente>{
 
-
-public class ClienteDAO {
 	/**
-	 * Gera a persistência do Fornecedor r no 
+	 * Gera a persistência do Cliente r no 
 	 * banco de dados.
 	 * 
-	 * @param r Um objeto da classe Fornecedor
+	 * @param r Um objeto da classe Cliente
 	 */
 	public void insert (Cliente r) {
 		/**
@@ -35,7 +24,7 @@ public class ClienteDAO {
 		Connection con = null;  // conexão com o bd
 		PreparedStatement pst = null;  // statement sql
 		ResultSet rs = null;  // retorno do bd
-		String sql = "INSERT INTO clientes " +
+		String sql = "INSERT INTO Cliente " +
 					 "(cpf,nome,celular,email)" + 
 					 "VALUES (?,?,?,?)";  // comando para inserção
 		try {
@@ -54,10 +43,10 @@ public class ClienteDAO {
 	}
 	
 	/**
-	 * Retorna a lista de fornecedores 
+	 * Retorna a lista de Clientees 
 	 * cadastrados no banco de dados.
 	 * 
-	 * @return O ArrayList com objetos Fornecedor.
+	 * @return O ArrayList com objetos Cliente.
 	 */
 	public ArrayList<Cliente> select () {
 		ArrayList<Cliente> lista = new ArrayList<>();
@@ -65,7 +54,7 @@ public class ClienteDAO {
 		PreparedStatement pst = null;  // statement sql
 		ResultSet rs = null;  // retorno do bd
 		String sql = "SELECT id,cpf,nome,celular,email " +
-					 " FROM clientes";
+					 "FROM Cliente ";
 		try {
 			con = ConnectionFactory.getConnection();
 			pst = con.prepareStatement(sql);
@@ -87,21 +76,21 @@ public class ClienteDAO {
 	}
 
 	/**
-	 * Pesquisa o fornecedor com código informado
+	 * Pesquisa o Cliente com código informado
 	 * no banco de dados. Se encontrar, retorna
-	 * um objeto do tipo Fornecedor. Caso o código não 
+	 * um objeto do tipo Cliente. Caso o código não 
 	 * existe no banco de dados, retorna null.
 	 * 
-	 * @return Um objeto do tipo Fornecedor
+	 * @return Um objeto do tipo Cliente
 	 */
 	public Cliente select(int id) {
-		Cliente cliente = null;
+		Cliente Cliente = null;
 		Connection con = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		String sql = "SELECT id,cpf,nome,celular,email " +
-					 "FROM clientes " +
-					 " WHERE id = ? ";
+					 "FROM Cliente " +
+					 "WHERE id = ? ";
 		try {
 			con = ConnectionFactory.getConnection();
 			pst = con.prepareStatement(sql);
@@ -113,16 +102,15 @@ public class ClienteDAO {
 				String nome = rs.getString(3);
 				String celular = rs.getString(4);
 				String email = rs.getString(5);
-				cliente = new Cliente(codigo,cpf,nome,celular,email);
+				Cliente = new Cliente(codigo,cpf,nome,celular,email);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {
 			ConnectionFactory.closeConnection(con,pst,rs);
 		}
-		return cliente;
+		return Cliente;
 	}
 	
 }
-
 

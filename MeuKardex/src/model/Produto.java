@@ -7,90 +7,115 @@ import java.util.ArrayList;
 
 import javax.swing.table.DefaultTableModel;
 
+import dao.DAO;
 import dao.ProdutoDAO;
-import util.Converte;
 
 public class Produto {
 
 	private int id;
 	private String nome;
 	private String localizacao;
-	private int qtdeMinima;
 	private int qtdeMaxima;
+	private int qtdeMinima;
 	private int qtdeEstoque;
 	private static ArrayList<Produto> lista = new ArrayList<>();
-	public static final String ARQUIVO_PRODUTOS = "C:\\Users\\brunp\\git\\javaprograma\\MeuKardex\\db\\Produtos.csv";
-	
-	
-	public Produto() {
-		super();
-	}
-	
-	public Produto(String nome, String localizacao, int qtdeMinima, int qtdeMaxima, int qtdeEstoque) {
+	public static final String ARQUIVO_PRODUTOS = "C:/Projects/JavaProgrammer/Kardex/db/Produtos.csv";
+
+	public Produto(String nome, String localizacao, 
+		       int qtdeMaxima, int qtdeMinima, 
+		       int qtdeEstoque) {
 		super();
 		setId(0);
 		setNome(nome);
 		setLocalizacao(localizacao);
-		if ((qtdeMaxima < 1) || (qtdeMaxima > 1000)) 
-			qtdeMaxima = 100;  // valor default
-		setQtdeMinima(qtdeMinima);
+		if ((qtdeMaxima < 1) || (qtdeMaxima > 1000))
+			qtdeMaxima = 100; // valor default
 		setQtdeMaxima(qtdeMaxima);
+		setQtdeMinima(qtdeMinima);
 		setQtdeEstoque(qtdeEstoque);
 		gravar();
-		
 	}
 	
-
-	public Produto(int id, String nome, String localizacao, int qtdeMinima, int qtdeMaxima, int qtdeEstoque) {
+	public Produto(int id, String nome, String localizacao, 
+			       int qtdeMaxima, int qtdeMinima, 
+			       int qtdeEstoque) {
 		super();
 		setId(id);
 		setNome(nome);
 		setLocalizacao(localizacao);
-		if ((qtdeMaxima < 1) || (qtdeMaxima > 1000)) 
-			qtdeMaxima = 100;  // valor default
-		setQtdeMinima(qtdeMinima);
 		setQtdeMaxima(qtdeMaxima);
+		setQtdeMinima(qtdeMinima);
 		setQtdeEstoque(qtdeEstoque);
-		
-		
 	}
-	
-	private void gravar () {
-		ProdutoDAO dao = new ProdutoDAO();
+
+	private void gravar() {
+		DAO dao = new ProdutoDAO();
 		dao.insert(this);
+		// Persistencia em arquivo CSV
 		//lista.add(this);
 		//gravaCSV();
 	}
-	
+
+	/*
+	 * O método gravaCSV deve estar na classe ProdutoDAO,
+	 * pois uma classe model não deve fazer persistência
+	 * de dados pois não deve ter conexão com objetos
+	 * fora do sistema.
+	 */
 	private void gravaCSV() {
 		try {
-		FileWriter fw = new FileWriter(ARQUIVO_PRODUTOS);
-		BufferedWriter bw = new BufferedWriter(fw);
-		bw.write("id,nome,localizacao,qtdeMinima,qtdeMaxima,qtedeEstoque\n");
-		for (Produto p: getLista()) {
-			bw.write(id);
-			bw.write(p.getId() + "," );
-			bw.write(p.getLocalizacao() + ",");
-			bw.write(p.getQtdeMinima() + ",");
-			bw.write(p.getQtdeMaxima() + ",");
-			bw.write(p.getQtdeEstoque() + "\n");
+			FileWriter fw = new FileWriter(ARQUIVO_PRODUTOS);
+			BufferedWriter bw = new BufferedWriter(fw);
+			// gravar o cabeçalho
+			bw.write("id,"+
+					 "nome,"+
+					 "localizacao,"+
+					 "qtdeMaxima,"+
+					 "qtdeMinima,"+
+					 "qtdeEstoque\n");
+			for (Produto p : getLista()) {
+				bw.write(p.getId() + ",");
+				bw.write(p.getNome() + ",");
+				bw.write(p.getLocalizacao() + ",");
+				bw.write(p.getQtdeMaxima() + ",");
+				bw.write(p.getQtdeMinima() + ",");
+				bw.write(p.getQtdeEstoque() + "\n");
+			}
+			// fechar o arquivo
+			bw.close();
+			fw.close();
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
 		}
-		bw.close();
-		fw.close();
-		
-	} catch (IOException e) {
-		System.out.println(e.getMessage());
 	}
-	}
-	
-	
-	
+
 	public static ArrayList<Produto> getLista() {
 		return (new ProdutoDAO().select());
-		//eturn lista;
+		//return lista;
+	}
+
+	public static DefaultTableModel getTableModel() {
+		DefaultTableModel modelo = new DefaultTableModel();
+		modelo.addColumn("ID");
+		modelo.addColumn("Nome");
+		modelo.addColumn("Localização");
+		modelo.addColumn("Mínimo");
+		modelo.addColumn("Máximo");
+		modelo.addColumn("Estoque");
+		ProdutoDAO dao = new ProdutoDAO();
+		for (Produto p: dao.select()) {
+			String[] row = { String.valueOf(p.getId()),
+							 p.getNome(),
+							 p.getLocalizacao(),
+							 String.valueOf(p.getQtdeMinima()),
+							 String.valueOf(p.getQtdeMaxima()),
+							 String.valueOf(p.getQtdeEstoque())
+							};
+			modelo.addRow(row);
+		}
+		return modelo;
 	}
 	
-
 	public int getId() {
 		return id;
 	}
@@ -140,8 +165,8 @@ public class Produto {
 	}
 
 	public void setQtdeMinima(int qtdeMinima) {
-		if ((qtdeMinima < 0) || (qtdeMinima > 100)) {
-			throw new IllegalArgumentException("Deve estar entre 0 e 100!");
+		if ((qtdeMinima < 0) || (qtdeMinima > 1000)) {
+			throw new IllegalArgumentException("Deve estar entre 0 e 1000!");
 		}
 		this.qtdeMinima = qtdeMinima;
 	}
@@ -159,40 +184,16 @@ public class Produto {
 		qtde = qtde + entrada.getQtde();
 		setQtdeEstoque(qtde);
 	}
-	
+
 	public void saida(Saida saida) {
 		int qtde = getQtdeEstoque();
 		qtde = qtde - saida.getQtde();
 		setQtdeEstoque(qtde);
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Produto [id=" + id + 
-				", nome=" + nome + 
-				", qtdeEstoque=" + qtdeEstoque + "]";
+		return "Produto [id=" + id + ", nome=" + nome + ", qtdeEstoque=" + qtdeEstoque + "]";
 	}
-	
-	public static DefaultTableModel getTableModel () {
-		DefaultTableModel modelo = new DefaultTableModel();
-		modelo.addColumn("ID");
-		modelo.addColumn("Nome");
-		modelo.addColumn("Localização");
-		modelo.addColumn("QtdeMínima");
-		modelo.addColumn("QtdeMáxima");
-		modelo.addColumn("QtdeEstoque");
-		ProdutoDAO dao = new ProdutoDAO();
-		for (Produto p: dao.select() ) {
-			String [] row = { String.valueOf( p.getId()),
-							p.getNome(),
-							p.getLocalizacao(),
-							String.valueOf(p.getQtdeMinima()),
-							String.valueOf(p.getQtdeMaxima()),
-							String.valueOf(p.getQtdeEstoque())
-					};
-			modelo.addRow(row);
-		}
-		return modelo;
-	}
-	
+
 }

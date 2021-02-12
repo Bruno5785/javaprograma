@@ -51,7 +51,7 @@ public class Mascara {
 		return mf;
 	}
 	
-	public static MaskFormatter Data () {
+	public static MaskFormatter data () {
 		MaskFormatter mf = null;
 		try {
 			mf = new MaskFormatter ("##/##/####");
@@ -61,5 +61,4 @@ public class Mascara {
 		}
 		return mf;
 	}
-	
 }

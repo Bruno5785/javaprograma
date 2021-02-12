@@ -3,39 +3,34 @@ package model;
 import java.util.ArrayList;
 
 import dao.ClienteDAO;
-import util.ValidaCPF;
 
 public class Cliente {
-	
+
 	private int id;
 	private String cpf;
 	private String nome;
 	private String celular;
 	private String email;
-	private static ArrayList<Cliente> clientes = new ArrayList<>();
 	
 	public Cliente() {
 		super();
 	}
-	
+
 	public Cliente(String cpf, String nome, String celular, String email) {
 		super();
-		setId(0);
+		setId(id);
 		setCpf(cpf);
 		setNome(nome);
 		setCelular(celular);
 		setEmail(email);
 		gravar();
 	}
-
-	private void gravar( ) {
-		new ClienteDAO().insert(this);
-		
-	}
 	
-	public static ArrayList<Cliente> getLista() {
-		ClienteDAO dao = new ClienteDAO();
-		return dao.select();
+	
+	
+	private void gravar() {
+
+		new ClienteDAO().insert(this);
 	}
 
 	public Cliente(int id, String cpf, String nome, String celular, String email) {
@@ -46,6 +41,13 @@ public class Cliente {
 		setCelular(celular);
 		setEmail(email);
 	}
+	
+	public static ArrayList<Cliente> getLista1() {
+		// return clientes;
+		ClienteDAO dao = new ClienteDAO();
+		return dao.select();
+	}
+	
 
 	public int getId() {
 		return id;
@@ -60,12 +62,7 @@ public class Cliente {
 	}
 
 	public void setCpf(String cpf) {
-		if (ValidaCPF.isCPF(cpf)) {
-			this.cpf = cpf;
-		} else {
-			throw new IllegalArgumentException("CPF inválido");
-		}
-		
+		this.cpf = cpf;
 	}
 
 	public String getNome() {
@@ -92,7 +89,7 @@ public class Cliente {
 		if (celular.isBlank()) {
 			throw new IllegalArgumentException("Não pode estar em branco!");
 		} else if ((!celular.isEmpty()) && (celular.length() != 15)) {
-			throw new IllegalArgumentException("Deve estar no formato (XX)X-XXXX-XXXX");
+			throw new IllegalArgumentException("Deve estar no formato (XX) XXXXX-XXXX");
 		} else {
 			this.celular = celular;
 		}		
@@ -112,6 +109,9 @@ public class Cliente {
 		return "Cliente [id=" + id + ", nome=" + nome + "]";
 	}
 
-	
+	public static Object getLista() {
+		// TODO Auto-generated method stub
+		return null;
+	}	
 	
 }

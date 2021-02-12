@@ -9,7 +9,6 @@ import java.util.Date;
 
 import javax.swing.JOptionPane;
 
-import dao.ClienteDAO;
 import dao.ConnectionFactory;
 import dao.EntradaDAO;
 import model.Cliente;
@@ -34,8 +33,6 @@ public class Principal {
 		//ArrayList<Cliente> clientes = seedCliente();
 		//seedEntrada();  // teste do EntradaDAO.insert
 		//testeEntradaDAOSelect();
-		//testeClienteDAOSelect();
-		
 
 		Tela frame = new Tela();
 		frame.setVisible(true);
@@ -51,13 +48,6 @@ public class Principal {
 		 * System.out.println(s); System.out.println(p);
 		 * 
 		 */
-	}
-	
-	public static void testeClienteDAOSelect() {
-		ClienteDAO dao = new ClienteDAO();
-		for (Cliente e: dao.select()) {
-			System.out.println(e);
-		}
 	}
 	
 	public static void testeEntradaDAOSelect() {
@@ -91,13 +81,13 @@ public class Principal {
 	public static Entrada seedEntrada() {
 		Produto p = new Produto(1,"nomexxxx","loc",10,1,8);
 		Fornecedor f = new Fornecedor(3,"93.979.377/0001-15",
-									  " nomexxxx","(11) 1234-5678",
-								 	  " email@email.com");
+									  "nomexxxx","(11) 1234-5678",
+								 	  "email@email.com");
 		int id = 1;
 		Date data = new Date("02/05/2021");
-		String doc = "NF 959";
-		int qtde = 20;
-		double valor = 350.00;
+		String doc = "NF 111";
+		int qtde = 5;
+		double valor = 200.00;
 		Entrada e = new Entrada(p, f, data, doc, qtde, valor);
 		return e;
 	}

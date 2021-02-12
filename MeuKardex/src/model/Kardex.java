@@ -1,6 +1,30 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+
+import javax.swing.table.DefaultTableModel;
+
+import dao.EntradaDAO;
+import dao.SaidaDAO;
+import util.Converte;
+
+/*
+ * implementar:
+ * 		- atributos private
+ * 		- construtor vazio
+ * 		- construtor completo
+ * 		- getters / setters atributos
+ * 		- toString(): id, nome do produto, data, qtde, valor
+ * validações:
+ * 		- id não pode ser setado manualmente - somente por construtor
+ * 		- produto não pode ser nulo
+ * 		- doc: pode ser vazio, não pode ser brancos, se não for vazio
+ * 			   tem que ter pelo menos 3 caracteres
+ * 		- qtde: deve estar entre 1 e 1000
+ * 		- valor: deve estar entre 0.01 e 10_000.00
+ */
 
 public abstract class Kardex {
 
@@ -39,7 +63,7 @@ public abstract class Kardex {
 
 	public void setProduto(Produto produto) {
 		if (produto == null) {
-			throw new IllegalArgumentException("Produto nulo n�o permitido!");
+			throw new IllegalArgumentException("Produto nulo não permitido!");
 		}
 		this.produto = produto;
 	}
@@ -57,12 +81,12 @@ public abstract class Kardex {
 	}
 
 	/*
-	 * doc: pode ser vazio, n�o pode ser brancos, se n�o for vazio tem que ter pelo
+	 * doc: pode ser vazio, não pode ser brancos, se não for vazio tem que ter pelo
 	 * menos 3 caracteres
 	 */
 	public void setDoc(String doc) {
 		if (doc.isBlank()) {
-			throw new IllegalArgumentException("N�o pode estar em branco!");
+			throw new IllegalArgumentException("Não pode estar em branco!");
 		} else if ((!doc.isEmpty()) && (doc.length() < 3)) {
 			throw new IllegalArgumentException("3+ caracteres!");
 		} else {
@@ -94,6 +118,47 @@ public abstract class Kardex {
 		}
 	}
 
+	public static ArrayList<Kardex> getListaKardex(Produto produto) {
+		ArrayList<Kardex> lista = new ArrayList<>();
+		for (Entrada e : new EntradaDAO().select(produto)) {
+			lista.add(e);
+		}
+
+		for (Saida s : new SaidaDAO().select(produto)) {
+			lista.add(s);
+		}
+		// ordena por data o arraylist de entradas + sa�das
+		Collections.sort(lista, (a, b) -> a.getData().compareTo(b.getData()));
+		return lista;
+	}
+
+	public static DefaultTableModel getTableModel(Produto produto) {
+		DefaultTableModel modelo = new DefaultTableModel();
+		modelo.addColumn("Tipo");
+		modelo.addColumn("Data");
+		modelo.addColumn("Nome");
+		modelo.addColumn("Docto");
+		modelo.addColumn("Qtde");
+		modelo.addColumn("Valor");
+		for (Kardex k : getListaKardex(produto)) {
+			if (k instanceof Entrada) {
+				Entrada e = (Entrada) k; // downcasting
+				String[] str = { "E",Converte.date2dmy(e.getData()),
+						e.getFornecedor().getNome(), e.getDoc(), String.valueOf(e.getQtde()),
+						String.valueOf(e.getValor()) };
+				modelo.addRow(str);
+			}
+			if (k instanceof Saida) {
+				Saida s = (Saida) k; // downcasting
+				String[] str = { "S",Converte.date2dmy(s.getData()),
+						s.getCliente().getNome(), s.getDoc(), String.valueOf(s.getQtde()),
+						String.valueOf(s.getValor()) };
+				modelo.addRow(str);
+			}
+
+		}
+		return modelo;
+	}	
 	@Override
 	public String toString() {
 		return "Kardex [id=" + id + 
@@ -102,7 +167,5 @@ public abstract class Kardex {
 				", qtde=" + qtde + 
 				", valor=" + valor + "]";
 	}
-	
-	
-	
+
 }

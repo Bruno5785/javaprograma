@@ -1,7 +1,10 @@
 package model;
-
 import java.util.Date;
 
+/*
+ * implementar a classe Saida similar à classe Entrada
+ * 
+ */
 public class Saida extends Kardex {
 	
 	private Cliente cliente;
@@ -41,6 +44,6 @@ public class Saida extends Kardex {
 				//", data=" + getData() + 
 				", qtde=" + getQtde() + 
 				", valor=" + getValor() + "]";
-	}
+	}	
 
 }

@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -19,16 +22,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 
 import model.Entrada;
 import model.Fornecedor;
 import model.Produto;
 import util.Converte;
 import util.Mascara;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class TelaEntradas extends JFrame {
 
@@ -39,32 +40,43 @@ public class TelaEntradas extends JFrame {
 	private JPanel pnCentral;
 	private JLabel lbProduto;
 	private JComboBox cbProduto;
-	private JLabel lbFornecor;
+	private JLabel lbFornecedor;
 	private JComboBox cbFornecedor;
 	private JLabel lbData;
 	private JLabel lbDoc;
 	private JTextField tfDoc;
-	private JLabel tbQuantidade;
-	private JFormattedTextField tfData;
-	private JTextField tfQuantidade;
+	private JLabel lbQtde;
+	private JTextField tfQtde;
 	private JLabel lbValor;
 	private JTextField tfValor;
-	private JButton btnNewButton;
-	private ArrayList<Produto> produtos = new ArrayList();
-	private ArrayList<Fornecedor> fornecedores = new ArrayList();
-
+	private JFormattedTextField tfData;
+	private JButton btGravar;
+	private ArrayList<Produto> produtos = new ArrayList<>();
+	private ArrayList<Fornecedor> fornecedores = new ArrayList<>();
+	private Entrada reg = null;
 	
 
 	/**
 	 * Create the frame.
 	 */
 	public TelaEntradas() {
+		this(null);
+	}
+	public TelaEntradas(Entrada e) {
 		initComponents();
 		setCombobox();
+		if (e != null) { // alteração
+			reg = e;
+			preencheDados();
+		} else {         // inclusão
+			reg = null;
+			limpaTela();
+		}
 	}
+	
 	private void initComponents() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 701, 466);
+		setBounds(100, 100, 509, 343);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -73,21 +85,20 @@ public class TelaEntradas extends JFrame {
 		pnTitulo = new JPanel();
 		pnTitulo.setLayout(null);
 		pnTitulo.setPreferredSize(new Dimension(10, 70));
-		pnTitulo.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		pnTitulo.setBackground(new Color(204, 204, 153));
+		pnTitulo.setBorder(new BevelBorder(BevelBorder.RAISED, null, null, null, null));
+		pnTitulo.setBackground(SystemColor.activeCaption);
 		contentPane.add(pnTitulo, BorderLayout.NORTH);
 		
 		lbLogo = new JLabel("");
 		lbLogo.setIcon(new ImageIcon(TelaEntradas.class.getResource("/images/Logo3.png")));
-		lbLogo.setBounds(53, 8, 64, 59);
+		lbLogo.setBounds(10, 11, 64, 59);
 		pnTitulo.add(lbLogo);
 		
 		lblEntradas = new JLabel("Entradas");
 		lblEntradas.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEntradas.setForeground(Color.BLACK);
-		lblEntradas.setFont(new Font("Georgia", Font.PLAIN, 33));
-		lblEntradas.setBackground(Color.BLACK);
-		lblEntradas.setBounds(10, 16, 655, 39);
+		lblEntradas.setForeground(Color.WHITE);
+		lblEntradas.setFont(new Font("Tahoma", Font.PLAIN, 32));
+		lblEntradas.setBounds(21, 11, 441, 39);
 		pnTitulo.add(lblEntradas);
 		
 		pnCentral = new JPanel();
@@ -97,32 +108,31 @@ public class TelaEntradas extends JFrame {
 		
 		cbProduto = new JComboBox();
 		
-		lbFornecor = new JLabel("Fornecedor:");
+		lbFornecedor = new JLabel("Fornecedor:");
 		
 		cbFornecedor = new JComboBox();
 		
 		lbData = new JLabel("Data:");
 		
-		lbDoc = new JLabel("Documento:");
+		lbDoc = new JLabel("Docto:");
 		
 		tfDoc = new JTextField();
 		tfDoc.setColumns(10);
 		
-		tbQuantidade = new JLabel("Quantidade:");
+		lbQtde = new JLabel("Quantidade:");
 		
-		tfData = new JFormattedTextField(Mascara.Data());
-		
-		tfQuantidade = new JTextField();
-		tfQuantidade.setColumns(10);
+		tfQtde = new JTextField();
+		tfQtde.setColumns(10);
 		
 		lbValor = new JLabel("Valor:");
-		lbValor.setFont(new Font("Calibri", Font.PLAIN, 15));
 		
 		tfValor = new JTextField();
 		tfValor.setColumns(10);
 		
-		btnNewButton = new JButton("Gravar");
-		btnNewButton.addActionListener(new ActionListener() {
+		tfData = new JFormattedTextField(Mascara.data());
+		
+		btGravar = new JButton("Gravar");
+		btGravar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				gravaEntrada();
 			}
@@ -131,64 +141,70 @@ public class TelaEntradas extends JFrame {
 		gl_pnCentral.setHorizontalGroup(
 			gl_pnCentral.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_pnCentral.createSequentialGroup()
-					.addGap(44)
+					.addGap(26)
 					.addGroup(gl_pnCentral.createParallelGroup(Alignment.TRAILING)
-						.addComponent(lbValor)
-						.addComponent(tbQuantidade)
-						.addComponent(lbDoc)
-						.addComponent(lbData)
-						.addComponent(lbProduto)
-						.addComponent(lbFornecor))
-					.addGap(18)
-					.addGroup(gl_pnCentral.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_pnCentral.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(cbFornecedor, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addComponent(cbProduto, Alignment.LEADING, 0, 333, Short.MAX_VALUE))
-						.addComponent(tfData, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE)
-						.addComponent(tfDoc, GroupLayout.PREFERRED_SIZE, 205, GroupLayout.PREFERRED_SIZE)
-						.addComponent(tfQuantidade, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(tfValor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(220))
-				.addGroup(Alignment.TRAILING, gl_pnCentral.createSequentialGroup()
-					.addContainerGap(502, Short.MAX_VALUE)
-					.addComponent(btnNewButton)
-					.addGap(84))
+						.addComponent(btGravar)
+						.addGroup(gl_pnCentral.createParallelGroup(Alignment.LEADING, false)
+							.addGroup(gl_pnCentral.createSequentialGroup()
+								.addGap(42)
+								.addComponent(lbProduto)
+								.addGap(18)
+								.addComponent(cbProduto, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addGroup(gl_pnCentral.createSequentialGroup()
+								.addGap(26)
+								.addGroup(gl_pnCentral.createParallelGroup(Alignment.TRAILING)
+									.addComponent(lbFornecedor)
+									.addComponent(lbData)
+									.addComponent(lbQtde))
+								.addGap(18)
+								.addGroup(gl_pnCentral.createParallelGroup(Alignment.LEADING)
+									.addComponent(cbFornecedor, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addGroup(gl_pnCentral.createSequentialGroup()
+										.addGroup(gl_pnCentral.createParallelGroup(Alignment.TRAILING, false)
+											.addGroup(gl_pnCentral.createSequentialGroup()
+												.addComponent(tfQtde, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(lbValor))
+											.addGroup(Alignment.LEADING, gl_pnCentral.createSequentialGroup()
+												.addComponent(tfData, GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
+												.addGap(47)
+												.addComponent(lbDoc)))
+										.addGap(18)
+										.addGroup(gl_pnCentral.createParallelGroup(Alignment.LEADING, false)
+											.addComponent(tfValor)
+											.addComponent(tfDoc, GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)))))))
+					.addContainerGap(63, Short.MAX_VALUE))
 		);
 		gl_pnCentral.setVerticalGroup(
 			gl_pnCentral.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_pnCentral.createSequentialGroup()
-					.addGap(32)
+					.addGap(26)
 					.addGroup(gl_pnCentral.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lbProduto)
 						.addComponent(cbProduto, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
-					.addGroup(gl_pnCentral.createParallelGroup(Alignment.TRAILING)
-						.addComponent(cbFornecedor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lbFornecor))
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_pnCentral.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lbFornecedor)
+						.addComponent(cbFornecedor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
 					.addGroup(gl_pnCentral.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lbData)
-						.addComponent(tfData, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(27)
-					.addGroup(gl_pnCentral.createParallelGroup(Alignment.BASELINE)
+						.addComponent(tfData, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lbDoc)
 						.addComponent(tfDoc, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(29)
+					.addGap(18)
 					.addGroup(gl_pnCentral.createParallelGroup(Alignment.BASELINE)
-						.addComponent(tbQuantidade)
-						.addComponent(tfQuantidade, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(30)
-					.addGroup(gl_pnCentral.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lbQtde)
+						.addComponent(tfQtde, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lbValor)
 						.addComponent(tfValor, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
-					.addComponent(btnNewButton)
-					.addContainerGap(38, Short.MAX_VALUE))
+					.addComponent(btGravar)
+					.addContainerGap(15, Short.MAX_VALUE))
 		);
 		pnCentral.setLayout(gl_pnCentral);
 	}
 	
-
 	private void setCombobox() {
 		produtos =  Produto.getLista();
 		cbProduto.removeAllItems();
@@ -201,23 +217,43 @@ public class TelaEntradas extends JFrame {
 			cbFornecedor.addItem(f.getNome());
 		}
 	}
-	
+
 	private void gravaEntrada() {
 		Produto p = produtos.get(cbProduto.getSelectedIndex());
 		Fornecedor f = fornecedores.get(cbFornecedor.getSelectedIndex());
 		Date data = Converte.str2date(tfData.getText());
 		String doc = tfDoc.getText();
-		int qtde = Converte.toInt(tfQuantidade.getText());
+		int qtde = Converte.toInt(tfQtde.getText());
 		double valor = Double.parseDouble(tfValor.getText());
-		new Entrada(p,f,data,doc,qtde,valor);
+		if (reg == null) {  // inclusão
+			new Entrada(p,f,data,doc,qtde,valor);
+		} else {    // alteração
+			reg.setProduto(p);
+			reg.setFornecedor(f);
+			reg.setData(data);
+			reg.setDoc(doc);
+			reg.setQtde(qtde);
+			reg.setValor(valor);
+			reg.update();
+		}
 		limpaTela();
 	}
 	
 	private void limpaTela() {
 		tfData.setText("");
 		tfDoc.setText("");
-		tfQuantidade.setText("");
+		tfQtde.setText("");
 		tfValor.setText("");
+		cbProduto.requestFocus();
+	}
+
+	private void preencheDados() {
+		cbProduto.setSelectedItem(reg.getProduto().getNome());
+		cbFornecedor.setSelectedItem(reg.getFornecedor().getNome());
+		tfData.setText(Converte.date2dmy(reg.getData()));
+		tfDoc.setText(reg.getDoc());
+		tfQtde.setText(String.valueOf(reg.getQtde()));
+		tfValor.setText(String.valueOf(reg.getValor()));
 		cbProduto.requestFocus();
 	}
 }
