@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 
 import dao.ClienteDAO;
+import util.ValidaCPF;
 
 public class Cliente {
 
@@ -62,8 +63,14 @@ public class Cliente {
 	}
 
 	public void setCpf(String cpf) {
-		this.cpf = cpf;
+		if (ValidaCPF.isCPF(cpf)) {
+			this.cpf = cpf;
+		} else {
+			throw new IllegalArgumentException("CPF Inválido");
+		}
 	}
+	
+	
 
 	public String getNome() {
 		return nome;

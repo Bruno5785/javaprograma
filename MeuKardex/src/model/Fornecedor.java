@@ -95,7 +95,7 @@ import util.Verifica;
 
 		public void setTelefone(String telefone) {
 			if ((telefone.length() != 14) && (telefone.length() != 10)) {
-				throw new IllegalArgumentException("Telefone deve ter 10 dígitos!");
+				throw new IllegalArgumentException("Telefone deve ter 10 ou 14 dígitos!");
 			}
 			this.telefone = telefone;
 		}

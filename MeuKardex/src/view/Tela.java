@@ -121,6 +121,7 @@ public class Tela extends JFrame {
 	private JFormattedTextField tfClientesCelular;
 	private JLabel lbIncluir;
 	private JTable table;
+	private JLabel lblNewLabel;
 
 
 	/**
@@ -226,7 +227,12 @@ public class Tela extends JFrame {
 		btEntrada.setFont(new Font("Calibri", Font.BOLD, 23));
 		pnMenu.add(btEntrada);
 		
-		btSaida = new JButton("Sa\u00EDda");
+		btSaida = new JButton("Saida");
+		btSaida.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setPainel(Paineis.SAIDAS);
+			}
+		});
 		btSaida.setForeground(new Color(0, 0, 0));
 		btSaida.setBorder(null);
 		btSaida.setContentAreaFilled(false);
@@ -657,18 +663,36 @@ public class Tela extends JFrame {
 		
 		lbSaida = new JLabel("Sa\u00EDdas");
 		lbSaida.setFont(new Font("Calibri", Font.BOLD, 30));
+		
+		lblNewLabel = new JLabel("INCLUIR");
+		lblNewLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				cadastraSaida();
+			}
+		});
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setHorizontalTextPosition(SwingConstants.RIGHT);
+		lblNewLabel.setIcon(new ImageIcon(Tela.class.getResource("/images/btAdiciona.png")));
+		lblNewLabel.setFont(new Font("Calibri", Font.BOLD, 14));
 		GroupLayout gl_pnSaidaTitulo = new GroupLayout(pnSaidaTitulo);
 		gl_pnSaidaTitulo.setHorizontalGroup(
 			gl_pnSaidaTitulo.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_pnSaidaTitulo.createSequentialGroup()
 					.addGap(260)
-					.addComponent(lbSaida))
+					.addComponent(lbSaida)
+					.addPreferredGap(ComponentPlacement.RELATED, 132, Short.MAX_VALUE)
+					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
+					.addGap(62))
 		);
 		gl_pnSaidaTitulo.setVerticalGroup(
 			gl_pnSaidaTitulo.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_pnSaidaTitulo.createSequentialGroup()
 					.addGap(5)
 					.addComponent(lbSaida))
+				.addGroup(gl_pnSaidaTitulo.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblNewLabel))
 		);
 		pnSaidaTitulo.setLayout(gl_pnSaidaTitulo);
 		
@@ -857,5 +881,8 @@ public class Tela extends JFrame {
 		new TelaEntradas().setVisible(true);
 	}
 	
+	private void cadastraSaida() {
+		new TelaSaidas().setVisible(true);
+	}
 }
 
