@@ -1,8 +1,11 @@
 package model;
 import java.util.Date;
 
+import javax.swing.table.DefaultTableModel;
+
 import dao.EntradaDAO;
 import dao.SaidaDAO;
+import util.Converte;
 
 /*
  * implementar a classe Saida similar à classe Entrada
@@ -69,6 +72,31 @@ public class Saida extends Kardex {
 		}
 		this.cliente = cliente;
 	}
+	
+	public static DefaultTableModel getTableModel() {
+		DefaultTableModel modelo = new DefaultTableModel();
+		modelo.addColumn("ID");
+		modelo.addColumn("Produto");
+		modelo.addColumn("Fornecedor");
+		modelo.addColumn("Data");
+		modelo.addColumn("Docto");
+		modelo.addColumn("Qtde");
+		modelo.addColumn("Valor");
+		SaidaDAO dao = new SaidaDAO();
+		for (Saida e: dao.select()) {
+			String[] row = { String.valueOf(e.getId()),
+							 e.getProduto().getNome(),
+							 e.getFornecedor().getNome(),
+							 Converte.date2dmy(e.getData()),
+							 e.getDoc(),
+							 String.valueOf(e.getQtde()),
+							 String.valueOf(e.getValor())
+							};
+			modelo.addRow(row);
+		}
+		return modelo;
+	}
+	
 	
 	@Override
 	public String toString() {
